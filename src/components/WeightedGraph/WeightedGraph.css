@@ -1,0 +1,27 @@
+.vertex {
+  cursor: pointer;
+}
+
+.vertex.click-target {
+  stroke: white;
+  stroke-width: 3;
+  fill: white;
+}
+
+.MarkovChart {
+  position: relative;
+}
+
+.MarkovChart .WeightedGraph {
+  position: absolute;
+}
+
+.WeightedGraph.selected .vertex.click-target {
+  stroke: transparent;
+  fill: transparent;
+}
+
+.WeightedGraph.selected .vertex:not(.click-target) {
+  stroke: red;
+  fill: none;
+}
