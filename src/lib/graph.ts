@@ -6,8 +6,9 @@ export type Vertex = number;
 export type Point = [number, number, number];
 export type Chart = Point[];
 export type Vector = number[];
+export type Matrix = Vector[];
 
-type Range = [number, number];
+export type Range = [number, number];
 export function rmap(value: number, src: Range, dst: Range): number{
   if (value == null) throw new Error('Invalid value');
   const [smin, smax] = src;
@@ -17,24 +18,40 @@ export function rmap(value: number, src: Range, dst: Range): number{
   return (value - smin) * (dmax - dmin) / (smax - smin) + dmin;
 }
 
-export function normalize(values: Vector) {
+export function normalize_proportions(values: Vector = []) {
+  if (!values.length) return [];
+  const sum = _.sum(values);
+  if (sum === 0) return values.map((v) => 0);
+  const src: Range = [0, sum];
+  const dst: Range = [0, 1];
+  return values.map((value) => rmap(value, src, dst));
+}
+export function normalize_absolute(values: Vector = []) {
+  if (!values.length) return [];
   const src: Range = [0, Math.max(...values)];
   const dst: Range = [0, 1];
   return values.map((value) => rmap(value, src, dst));
 }
 
+const EPSILON = 0.00005;
 export function redistribute(values: Vector, index: number, delta: number) {
   if (index > values.length - 1) throw new Error('index out of bounds');
   if (delta < -1 || delta > 1) throw new Error('delta out of bounds');
   if (values.length < 2) throw new Error('vector length must be greater than 1');
   values.forEach((value) => {
-    if (value < 0 || value > 1) throw new Error('vector not normalized');
+    if (value < 0 || value > 1) {
+      throw new Error('vector not normalized: value out of bounds');
+    }
   })
   const sum = _.sum(values);
-  if (sum !== 1) throw new Error('proportions are incomplete')
+  if (sum < 1 - EPSILON || sum > 1 + EPSILON) {
+    throw new Error(`vector not normalized: proportions sum to ${sum}`);
+  }
   const pivot_0 = values[index];
   const pivot_1 = pivot_0 + delta;
-  if (pivot_1 < 0 || pivot_1 > 1) throw new Error('delta effect out of bounds');
+  if (pivot_1 < 0 || pivot_1 > 1) {
+    throw new Error('delta effect out of bounds');
+  }
   const rem_0 = sum - pivot_0;
   const rem_1 = sum - pivot_1;
   // if rem_0 is zero, that means that the pivot was 100% of the value and the the differences needs to be equally distributed among the rest of the values
@@ -79,7 +96,7 @@ export class Graph {
   }
 
   get normalized_weights(): number[] {
-    return normalize(this.weights);
+    return normalize_absolute(this.weights);
   }
 
   get vertices(): Vertex[] {
@@ -88,8 +105,9 @@ export class Graph {
 
   get edges(): Edge[] {
     return _.chain(this.vertices)
-      .map((v1) => this.vertices.map((v2) => new Edge(v1, v2)))
+      .map((v1) => this.vertices.map((v2) => v1 !== v2 && new Edge(v1, v2)))
       .flatten()
+      .compact()
       .uniqBy(({ a, b }) => [a, b].sort().join(':'))
       .value();
   }

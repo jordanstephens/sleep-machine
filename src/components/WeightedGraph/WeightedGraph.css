@@ -22,6 +22,10 @@
 }
 
 .WeightedGraph.selected .vertex:not(.click-target) {
-  stroke: red;
+  stroke: black;
   fill: none;
+}
+
+.WeightedGraph.fade {
+  opacity: 0.3;
 }

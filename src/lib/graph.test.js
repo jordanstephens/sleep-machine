@@ -1,4 +1,4 @@
-import graph, { rmap, normalize, redistribute } from './graph';
+import graph, { rmap, normalize_proportions, redistribute, normalize_absolute } from './graph';
 
 describe('rmap', () => {
   test('throws on undefined value', () => {
@@ -58,10 +58,10 @@ describe('rmap', () => {
   });
 });
 
-describe('normalize', () => {
+describe('normalize_absolute', () => {
   test('rmaps values in a vector to [0,1]', () => {
     const src = [1, 2, 3];
-    const dst = normalize(src);
+    const dst = normalize_absolute(src);
     expect(dst[0]).toBeCloseTo(0.33333);
     expect(dst[1]).toBeCloseTo(0.66666);
     expect(dst[2]).toBeCloseTo(1);
@@ -69,7 +69,62 @@ describe('normalize', () => {
 
   test('safely handles empty vectors', () => {
     const src = [];
-    const dst = normalize(src);
+    const dst = normalize_absolute(src);
+    expect(dst).toEqual([]);
+  });
+});
+
+describe('normalize_proportions', () => {
+  test('rmaps values in a vector such that their sum is 1', () => {
+    const src = [1, 1];
+    const dst = normalize_proportions(src);
+    expect(dst[0]).toBeCloseTo(0.5);
+    expect(dst[1]).toBeCloseTo(0.5);
+  });
+
+  test('rmaps values in a vector such that their sum is 1', () => {
+    const src = [1, 2, 3];
+    const dst = normalize_proportions(src);
+    expect(dst[0]).toBeCloseTo(0.16666);
+    expect(dst[1]).toBeCloseTo(0.33333);
+    expect(dst[2]).toBeCloseTo(0.5);
+  });
+
+  test('rmaps values in a vector such that their sum is 1', () => {
+    const src = [1, 0, 3];
+    const dst = normalize_proportions(src);
+    expect(dst[0]).toBeCloseTo(0.25);
+    expect(dst[1]).toBeCloseTo(0.0);
+    expect(dst[2]).toBeCloseTo(0.75);
+  });
+
+  test('safely handles zero vectors', () => {
+    const src = [0, 0, 0];
+    const dst = normalize_proportions(src);
+    expect(dst[0]).toBeCloseTo(0);
+    expect(dst[1]).toBeCloseTo(0);
+    expect(dst[2]).toBeCloseTo(0);
+  });
+
+  test('is stable for vectors which already meet the requirement', () => {
+    const src = [1, 0, 0];
+    const dst = normalize_proportions(src);
+    expect(dst[0]).toBeCloseTo(1);
+    expect(dst[1]).toBeCloseTo(0);
+    expect(dst[2]).toBeCloseTo(0);
+  });
+
+  test('is stable for vectors which already meet the requirement', () => {
+    const src = [0.33333, 0.33333, 0.33333];
+    const dst = normalize_proportions(src);
+    expect(dst[0]).toBeCloseTo(0.33333);
+    expect(dst[1]).toBeCloseTo(0.33333);
+    expect(dst[2]).toBeCloseTo(0.33333);
+  });
+
+  test('safely handles empty vectors', () => {
+    const src = [];
+    const dst = normalize_proportions(src);
     expect(dst).toEqual([]);
   });
 });
