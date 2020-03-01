@@ -15,7 +15,7 @@ interface IPointProps {
 }
 
 const Point: React.FC<IPointProps> = ({ point, config, weight, label, className, onClick }) => (
-  <g>
+  <g onClick={onClick}>
     <Label
       text={label || ""}
       point={point}
@@ -28,7 +28,6 @@ const Point: React.FC<IPointProps> = ({ point, config, weight, label, className,
       radius={config.point_radius}
       weight={1}
       className="click-target"
-      onClick={onClick}
     />
 
     <Node
@@ -36,7 +35,6 @@ const Point: React.FC<IPointProps> = ({ point, config, weight, label, className,
       radius={config.point_radius}
       weight={weight}
       className={className}
-      onClick={onClick}
     />
   </g>
 );
