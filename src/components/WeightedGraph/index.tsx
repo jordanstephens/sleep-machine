@@ -11,14 +11,13 @@ import * as G from '../../lib/graph';
 import Edge from './Edge';
 import Point from './Point';
 
-const { normalize } = G;
 const GRAPH_RADIUS = 33.33333;
 const POINT_RADIUS = 5;
 const DEFAULT_CONFIG = generateConfig(POINT_RADIUS, GRAPH_RADIUS);
 
 interface IProps {
   labels?: string[];
-  weights: number[];
+  weights: G.Vector;
   selected?: number;
   onVertexClick?: (i: G.Vertex, event: React.MouseEvent) => void;
   className?: string;
@@ -34,9 +33,9 @@ const WeightedGraph: React.FC<IProps> = ({
   config: _config
 }) => {
   const config = { ..._config, ...DEFAULT_CONFIG };
-  const graph = new G.Graph(weights.length);
+  const graph = new G.Graph(weights);
   const points = graph.chart(config.graph_radius);
-  const active_weights = normalize(weights)
+  const active_weights = graph.normalized_weights
   return (
     <div className={classnames('WeightedGraph', className)}>
       <svg viewBox={`0 0 ${SIZE} ${SIZE}`}>
