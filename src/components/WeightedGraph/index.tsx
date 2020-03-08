@@ -70,14 +70,14 @@ const WeightedGraph: React.FC<IProps> = ({
                   id={String(p2)}
                   p1={points[p1]}
                   p2={points[p2]}
-                  weight={weight}
+                  weight={onWeightDrag && weight}
                 />
               )
             })}
             {points.map((point, i) => (
               <Point
                 point={point}
-                weight={active_weights[i]}
+                weight={selected === i ? 1 : active_weights[i]}
                 label={labels[i] || String(i)}
                 onClick={(event: React.MouseEvent) => onVertexClick(i, event)}
                 className={classnames({

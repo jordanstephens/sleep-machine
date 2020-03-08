@@ -11,7 +11,7 @@ interface IEdgeProps {
   id: string;
   p1: G.Point;
   p2: G.Point;
-  weight: number;
+  weight?: number;
 }
 
 const Edge: React.FC<IEdgeProps> = ({ id, p1, p2, weight }) => {

@@ -6,9 +6,11 @@ import { DragEvent } from './Draggable';
 import * as G from '../lib/graph';
 
 interface IMarkovChartProps {
-  weights: G.Matrix,
-  current: G.Vertex,
-  next: G.Vertex
+  weights: G.Matrix;
+  current: G.Vertex;
+  next?: G.Vertex;
+  labels: string[];
+  onChange: (weights: G.Matrix) => void;
 }
 
 function RangeMeter(dmax: number) {
@@ -30,12 +32,13 @@ function RangeMeter(dmax: number) {
 const MarkovChart: React.FC<IMarkovChartProps> = ({
   current = 0,
   next,
-  weights: initialWeights
+  weights,
+  labels,
+  onChange
 }) => {
   const meter = RangeMeter(200);
-  const normalizedWeights = initialWeights.map(G.normalize_proportions);
+  const normalizedWeights = weights.map(G.normalize_proportions);
   const [editWeights, setEditWeights] = useState<G.Matrix>(cloneDeep(normalizedWeights));
-  const [weights, setWeights] = useState<G.Matrix>(normalizedWeights);
   const [selected, setSelected] = useState<G.Vertex | null>(null);
 
   function handleVertexClick(index: G.Vertex | null) {
@@ -58,13 +61,14 @@ const MarkovChart: React.FC<IMarkovChartProps> = ({
       console.error(error);
     }
     if (event.committed) {
-      setWeights([...editWeights])
+      onChange([...editWeights])
     }
   }
 
   return (
     <div className="MarkovChart">
       <WeightedGraph
+        labels={labels}
         weights={weights[current]}
         className={classnames('active', {
           fade: selected != null
@@ -73,9 +77,11 @@ const MarkovChart: React.FC<IMarkovChartProps> = ({
           if (selected) return;
           handleVertexClick(i);
         }}
+        selected={current}
       />
       {selected != null && (
         <WeightedGraph
+          labels={labels}
           weights={editWeights[selected]}
           selected={selected}
           className="selected"
