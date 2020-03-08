@@ -15,11 +15,7 @@ const INITIAL_WEIGHTS = [
   [0, 0, 0, 0, 0, 0, 0]
 ];
 
-const INITIAL_OPTIONS: Params = {
-  tempo: 90
-};
-
-const machine = new Machine(INITIAL_WEIGHTS, INITIAL_OPTIONS);
+const machine = new Machine(INITIAL_WEIGHTS);
 
 interface ISleepMachineProps {
 
@@ -48,10 +44,6 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
     setWeights(weights);
   }
 
-  function handleControlsChange(params: Params = {}) {
-
-  }
-
   return (
     <div className="SleepMachine">
       <div className="MarkovChart-container">
@@ -66,7 +58,7 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
       <div className="Controls-container">
         <Controls
           params={machine.params}
-          onChange={handleControlsChange}
+          onChange={machine.updateParams}
         />
       </div>
     </div>

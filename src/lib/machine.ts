@@ -5,7 +5,7 @@ import { EventEmitter } from 'events';
 const Tone = require('tone');
 
 const DEFAULT_PARAMS = {
-  tempo: 120
+  tempo: 90
 };
 
 const C4 = 48;
@@ -45,9 +45,9 @@ export default class Machine extends EventEmitter {
     this.range = 2;
     this.pattern = new ChordPattern(this.current, this.range);
     this.generators = [];
-    this.update(probabilities);
+    this.updateParams(params);
+    this.updateProbabilities(probabilities);
 
-    Tone.Transport.bpm.value = params.tempo;
     Tone.Transport.latencyHint = "playback"
     Tone.Transport.loop = true;
     Tone.Transport.loopStart = 0;
@@ -87,7 +87,13 @@ export default class Machine extends EventEmitter {
     }
   }
 
-  update(probabilities: number[][]) {
+  updateParams(params: Params = {}) {
+    if (params.tempo) {
+      Tone.Transport.bpm.value = params.tempo;
+    }
+  }
+
+  updateProbabilities(probabilities: number[][]) {
     this.generators = probabilities.map((col) => new VoseAliasMethod(col));
   }
 
