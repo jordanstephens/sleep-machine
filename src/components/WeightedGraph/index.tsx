@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import './WeightedGraph.css';
 import {
   SIZE,
+  POINT_RADIUS,
   NOOP,
   IConfig,
   generateConfig
@@ -13,7 +14,6 @@ import Point from './Point';
 import { DraggableProvider, DragEvent } from '../Draggable';
 
 const GRAPH_RADIUS = 33.33333;
-const POINT_RADIUS = 5;
 const DEFAULT_CONFIG = generateConfig(POINT_RADIUS, GRAPH_RADIUS);
 
 interface IProps {

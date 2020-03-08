@@ -1,5 +1,6 @@
 export const SIZE = 100;
 export const HALF = SIZE / 2;
+export const POINT_RADIUS = 5;
 export const NOOP = () => {};
 
 export const rel2abs = (value: number) => HALF + value;
