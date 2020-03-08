@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import './SleepMachine.css'
 import MarkovChart from './MarkovChart';
-import Machine, { MachineOptions } from '../lib/machine'
+import Controls from './Controls';
+import Machine, { Params } from '../lib/machine'
 
 const LABELS = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 const INITIAL_WEIGHTS = [
@@ -13,7 +15,7 @@ const INITIAL_WEIGHTS = [
   [0, 0, 0, 0, 0, 0, 0]
 ];
 
-const INITIAL_OPTIONS: MachineOptions = {
+const INITIAL_OPTIONS: Params = {
   tempo: 90
 };
 
@@ -46,15 +48,27 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
     setWeights(weights);
   }
 
+  function handleControlsChange(params: Params = {}) {
+
+  }
+
   return (
     <div className="SleepMachine">
-      <MarkovChart
-        labels={LABELS}
-        current={current}
-        next={next}
-        weights={weights}
-        onChange={handleWeightsChange}
-      />
+      <div className="MarkovChart-container">
+        <MarkovChart
+          labels={LABELS}
+          current={current}
+          next={next}
+          weights={weights}
+          onChange={handleWeightsChange}
+        />
+      </div>
+      <div className="Controls-container">
+        <Controls
+          params={machine.params}
+          onChange={handleControlsChange}
+        />
+      </div>
     </div>
   );
 }

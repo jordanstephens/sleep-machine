@@ -1,0 +1,25 @@
+.SleepMachine {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@media screen and (orientation:portrait) {
+  .SleepMachine { flex-direction: column; }
+  .Controls-container,
+  .MarkovChart-container {
+    height: 50%;
+    width: 100%;
+  }
+}
+@media screen and (orientation:landscape) {
+  .SleepMachine { flex-direction: row; }
+  .Controls-container,
+  .MarkovChart-container {
+    height: 100%;
+    width: 50%;
+  }
+}

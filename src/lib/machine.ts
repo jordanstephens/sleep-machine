@@ -4,7 +4,10 @@ import { EventEmitter } from 'events';
 
 const Tone = require('tone');
 
-const DEFAULT_TEMPO = 120;
+const DEFAULT_PARAMS = {
+  tempo: 120
+};
+
 const C4 = 48;
 const MAJOR_TRIAD = [0, 4, 7];
 const MINOR_TRIAD = [0, 3, 7];
@@ -19,19 +22,11 @@ const SCALE_DEGREE_TRIADS = [
   DIMINISHED_TRIAD
 ];
 
-const ROOT_OFFSETS = [
-  0,
-  2,
-  4,
-  5,
-  7,
-  9,
-  11
-];
+const ROOT_OFFSETS = [0, 2, 4, 5, 7, 9, 11];
 
 const rand = (min: number, max: number) => Math.floor(Math.random() * (max - min) + min);
 
-export interface MachineOptions {
+export interface Params {
   tempo?: number;
 }
 
@@ -39,13 +34,12 @@ export default class Machine extends EventEmitter {
   generators: VoseAliasMethod[];
   pattern: ChordPattern;
   current: number;
-  tempo: number;
   range: number;
   synth: Synth;
 
-  constructor(probabilities: number[][], options: MachineOptions = {}) {
+  constructor(probabilities: number[][], params: Params = {}) {
     super();
-    this.tempo = options.tempo || DEFAULT_TEMPO;
+    params = { ...DEFAULT_PARAMS, ...params }
     this.synth = new Synth();
     this.current = 0;
     this.range = 2;
@@ -53,7 +47,7 @@ export default class Machine extends EventEmitter {
     this.generators = [];
     this.update(probabilities);
 
-    Tone.Transport.bpm.value = this.tempo;
+    Tone.Transport.bpm.value = params.tempo;
     Tone.Transport.latencyHint = "playback"
     Tone.Transport.loop = true;
     Tone.Transport.loopStart = 0;
@@ -85,6 +79,12 @@ export default class Machine extends EventEmitter {
     Tone.Transport.scheduleRepeat((t: number) => {
       this.emit('progress', Tone.Transport.progress);
     }, '1i');
+  }
+
+  get params(): Params {
+    return {
+      tempo: Tone.Transport.bpm.value
+    }
   }
 
   update(probabilities: number[][]) {
