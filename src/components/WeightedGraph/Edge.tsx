@@ -1,18 +1,20 @@
 import React from 'react';
 import { rel2abs } from './util';
 import * as G from '../../lib/graph';
+import { Draggable } from '../Draggable';
 
 function format_weight(value: number): string {
   return `${(value * 100).toFixed(0)}%`;
 }
 
 interface IEdgeProps {
+  id: string;
   p1: G.Point;
   p2: G.Point;
   weight: number;
 }
 
-const Edge: React.FC<IEdgeProps> = ({ p1, p2, weight }) => {
+const Edge: React.FC<IEdgeProps> = ({ id, p1, p2, weight }) => {
   const [x1, y1] = p1.map(rel2abs)
   const [x2, y2] = p2.map(rel2abs)
   const x = Math.min(x1, x2);
@@ -39,10 +41,12 @@ const Edge: React.FC<IEdgeProps> = ({ p1, p2, weight }) => {
       />
       {weight && (
         <g>
-          <rect x={rect_x} y={rect_y} width={rect_w} height={rect_h} fill="white" />
-          <text x={midpoint_x} y={midpoint_y} style={{ fontSize: 3 }} dominantBaseline="middle" textAnchor="middle">
-            {format_weight(weight)}
-          </text>
+          <Draggable id={id} enabled={true}>
+            <rect x={rect_x} y={rect_y} width={rect_w} height={rect_h} fill="white" />
+            <text x={midpoint_x} y={midpoint_y} style={{ fontSize: 3, cursor: 'ns-resize', userSelect: 'none' }} dominantBaseline="middle" textAnchor="middle">
+              {format_weight(weight)}
+            </text>
+          </Draggable>
         </g>
       )}
     </g>

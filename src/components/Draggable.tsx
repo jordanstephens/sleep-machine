@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 type MousePosition = { x: number, y: number };
 type DragOrigin = { id: string } & MousePosition;
@@ -18,10 +18,12 @@ const DraggableContext = React.createContext<IDraggableContext | null>(null);
 
 interface IDraggableProps {
   id: string;
+  enabled: boolean;
   children: React.ReactNode;
 }
 
-export const Draggable: React.FC<IDraggableProps> = ({ id, children }) => {
+export const Draggable: React.FC<IDraggableProps> = ({ id, enabled, children }) => {
+  if (!enabled) return <Fragment>{children}</Fragment>;
   return (
     <DraggableContext.Consumer>
       {(context) => {
@@ -41,7 +43,7 @@ export const Draggable: React.FC<IDraggableProps> = ({ id, children }) => {
 }
 
 interface IDraggableProviderProps {
-  onDrag: (event: DragEvent) => void;
+  onDrag?: (event: DragEvent) => void;
   children: React.ReactNode;
 }
 
@@ -58,11 +60,13 @@ export class DraggableProvider extends React.Component<IDraggableProviderProps, 
   }
 
   componentDidMount() {
+    if (!this.props.onDrag) return;
     document.addEventListener('mouseup', this.onMouseUp);
     document.addEventListener('mousemove', this.onMouseMove);
   }
 
   componentWillUnmount() {
+    if (!this.props.onDrag) return;
     document.removeEventListener('mouseup', this.onMouseUp);
     document.removeEventListener('mousemove', this.onMouseMove);
   }
@@ -76,22 +80,26 @@ export class DraggableProvider extends React.Component<IDraggableProviderProps, 
   }
 
   handleDrag = (committed: boolean, event: MouseEvent) => {
+    const { onDrag } = this.props;
+    if (!onDrag) return;
     const { origin } = this.state;
-    if (!origin) return
+    if (!origin) return;
     const { id } = origin;
     const destination = { x: event.clientX, y: event.clientY };
     const delta = {
       x: destination.x - origin.x,
       y: destination.y - origin.y
     };
-    this.props.onDrag({ id, origin, delta, destination, committed });
+    onDrag({ id, origin, delta, destination, committed });
     if (committed) {
       this.setState({ origin: null });
     }
   }
 
   render() {
-    const { children } = this.props;
+    const { children, onDrag } = this.props;
+    if (!onDrag) return children;
+
     const { origin } = this.state;
     const setOrigin = (origin: DragOrigin | null) => this.setState({ origin });
     return (
