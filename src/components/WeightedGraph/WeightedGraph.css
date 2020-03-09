@@ -12,16 +12,24 @@
   fill: white;
 }
 
-.MarkovChart {
+.MarkovChart-container {
   position: relative;
-  height: 100%;
   display: flex;
   align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.MarkovChart {
+  position: absolute;
+  top: 4rem;
+  right: 4rem;
+  bottom: 4rem;
+  left: 4rem;
 }
 
 .MarkovChart .WeightedGraph {
   position: absolute;
-  width: 100%;
   top: 0;
   right: 0;
   bottom: 0;

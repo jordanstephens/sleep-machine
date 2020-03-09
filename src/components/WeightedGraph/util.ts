@@ -1,5 +1,6 @@
 export const SIZE = 100;
 export const HALF = SIZE / 2;
+export const CIRCUMFERENCE = 2 * Math.PI * HALF;
 export const POINT_RADIUS = 5;
 export const NOOP = () => {};
 

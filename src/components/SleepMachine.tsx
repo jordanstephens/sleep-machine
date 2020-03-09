@@ -3,6 +3,7 @@ import './SleepMachine.css'
 import MarkovChart from './MarkovChart';
 import Controls from './Controls';
 import Machine, { Params } from '../lib/machine'
+import ProgressRing from './ProgressRing';
 
 const LABELS = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 const INITIAL_WEIGHTS = [
@@ -46,6 +47,7 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
   return (
     <div className="SleepMachine">
       <div className="MarkovChart-container">
+        <ProgressRing progress={progress} />
         <MarkovChart
           labels={LABELS}
           current={current}
