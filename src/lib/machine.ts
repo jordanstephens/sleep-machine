@@ -32,6 +32,7 @@ export interface Params {
 
 export default class Machine extends EventEmitter {
   generators: VoseAliasMethod[];
+  probabilities: number[][];
   pattern: ChordPattern;
   current: number;
   range: number;
@@ -44,6 +45,7 @@ export default class Machine extends EventEmitter {
     this.current = 0;
     this.range = 2;
     this.pattern = new ChordPattern(this.current, this.range);
+    this.probabilities = [];
     this.generators = [];
     this.updateParams(params);
     this.updateProbabilities(probabilities);
@@ -94,6 +96,7 @@ export default class Machine extends EventEmitter {
   }
 
   updateProbabilities(probabilities: number[][]) {
+    this.probabilities = probabilities;
     this.generators = probabilities.map((col) => new VoseAliasMethod(col));
   }
 

@@ -25,7 +25,6 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
   const [progress, setProgress] = useState<number>(0.0);
   const [current, setCurrent] = useState<number>(0);
   const [next, setNext] = useState<number | undefined>(undefined);
-  const [weights, setWeights] = useState<number[][]>(INITIAL_WEIGHTS);
 
   useEffect(() => {
     machine.on('select', (next, current) => {
@@ -41,7 +40,7 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
   }, [])
 
   function handleWeightsChange(weights: number[][]) {
-    setWeights(weights);
+    machine.updateProbabilities(weights);
   }
 
   return (
@@ -51,7 +50,7 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
           labels={LABELS}
           current={current}
           next={next}
-          weights={weights}
+          weights={machine.probabilities}
           onChange={handleWeightsChange}
         />
       </div>
