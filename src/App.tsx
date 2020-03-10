@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css'
 import SleepMachine from './components/SleepMachine';
 
 function App() {

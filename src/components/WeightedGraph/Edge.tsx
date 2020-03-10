@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames'
 import { rel2abs, POINT_RADIUS } from './util';
 import * as G from '../../lib/graph';
 import { Draggable } from '../Draggable';
@@ -42,9 +43,10 @@ interface IEdgeProps {
   p1: G.Point;
   p2: G.Point;
   weight?: number;
+  selected?: boolean;
 }
 
-const Edge: React.FC<IEdgeProps> = ({ id, p1, p2, weight }) => {
+const Edge: React.FC<IEdgeProps> = ({ id, p1, p2, weight, selected }) => {
   const [x1, y1, x2, y2] = endpoints(p1, p2);
   const x = Math.min(x1, x2);
   const y = Math.min(y1, y2);
@@ -63,16 +65,17 @@ const Edge: React.FC<IEdgeProps> = ({ id, p1, p2, weight }) => {
         y1={y1}
         x2={x2}
         y2={y2}
-        style={{ stroke: 'black' }}
-        strokeWidth={0.25}
+        className={classnames('edge', {
+          selected: !!selected
+        })}
         strokeLinecap="round"
-        markerEnd="url(#arrow)"
+        markerEnd={selected ? 'url(#selected-arrow)' : 'url(#arrow)'}
       />
       {weight && (
         <g>
           <Draggable id={id} enabled={true}>
-            <rect x={rect_x} y={rect_y} width={rect_w} height={rect_h} fill="white" />
-            <text x={midpoint_x} y={midpoint_y} style={{ fontSize: 3, cursor: 'ns-resize', userSelect: 'none' }} dominantBaseline="middle" textAnchor="middle">
+            <rect x={rect_x} y={rect_y} width={rect_w} height={rect_h} className="weight-box" />
+            <text x={midpoint_x} y={midpoint_y} className="weight-label" style={{ fontSize: 3, cursor: 'ns-resize', userSelect: 'none' }} dominantBaseline="middle" textAnchor="middle">
               {format_weight(weight)}
             </text>
           </Draggable>

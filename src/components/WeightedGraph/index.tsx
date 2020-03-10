@@ -19,7 +19,8 @@ const DEFAULT_CONFIG = generateConfig(POINT_RADIUS, GRAPH_RADIUS);
 interface IProps {
   labels?: string[];
   weights: G.Vector;
-  selected?: number;
+  selected1?: number;
+  selected2?: number;
   onWeightDrag?: (event: DragEvent) => void;
   onVertexClick?: (i: G.Vertex | null, event: React.MouseEvent) => void;
   className?: string;
@@ -32,7 +33,8 @@ const WeightedGraph: React.FC<IProps> = ({
   onVertexClick = NOOP,
   onWeightDrag,
   className,
-  selected,
+  selected1,
+  selected2,
   config: _config
 }) => {
   const config = { ..._config, ...DEFAULT_CONFIG };
@@ -47,6 +49,14 @@ const WeightedGraph: React.FC<IProps> = ({
             <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5"
               markerWidth="6" markerHeight="6"
               orient="auto-start-reverse"
+              className="edge-arrow"
+            >
+              <path d="M 0 0 L 10 5 L 0 10 z" />
+            </marker>
+            <marker id="selected-arrow" viewBox="0 0 10 10" refX="5" refY="5"
+              markerWidth="6" markerHeight="6"
+              orient="auto-start-reverse"
+              className="edge-arrow selected"
             >
               <path d="M 0 0 L 10 5 L 0 10 z" />
             </marker>
@@ -56,13 +66,13 @@ const WeightedGraph: React.FC<IProps> = ({
             transformOrigin: '50% 50%'
           }}>
             {graph.edges.map(({ a, b }) => {
-              const [p1, p2] = selected === a
+              const [p1, p2] = selected1 === a
                 ? [a, b]
-                : selected === b
+                : selected1 === b
                   ? [b, a]
                   : []
               if (p1 == null || p2 == null) return null;
-              const weight = selected == null ? 0 : weights[p2]
+              const weight = selected1 == null ? 0 : weights[p2]
               if (weight === 0) return null;
               return (
                 <Edge
@@ -71,17 +81,20 @@ const WeightedGraph: React.FC<IProps> = ({
                   p1={points[p1]}
                   p2={points[p2]}
                   weight={onWeightDrag && weight}
+                  selected={selected1 === p1 && selected2 === p2}
                 />
               )
             })}
             {points.map((point, i) => (
               <Point
+                key={i}
                 point={point}
-                weight={selected === i ? 1 : active_weights[i]}
+                weight={selected1 === i ? 1 : active_weights[i]}
                 label={labels[i] || String(i)}
                 onClick={(event: React.MouseEvent) => onVertexClick(i, event)}
                 className={classnames({
-                  selected: selected === i
+                  selected1: selected1 === i,
+                  selected2: selected2 === i
                 })}
                 config={config}
               />

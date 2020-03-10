@@ -2,14 +2,31 @@
   cursor: pointer;
 }
 
-.vertex.selected {
-  fill: forestgreen;
+.vertex.selected1 {
+  fill: var(--current-vertex-color);
+}
+
+.vertex.selected2 {
+  fill: var(--next-vertex-color);
+}
+
+.edge {
+  stroke-width: 0.25;
+  stroke-dasharray: 0.1 1;
+}
+
+.edge.selected {
+  fill: var(--selected-edge-color);
+  stroke: var(--selected-edge-color);
+  stroke-dasharray: 0;
+}
+
+.edge-arrow.selected {
+  fill: var(--selected-edge-color);
 }
 
 .vertex.click-target {
-  stroke: white;
-  stroke-width: 3;
-  fill: white;
+  fill: transparent;
 }
 
 .MarkovChart-container {
@@ -40,6 +57,19 @@
   display: block;
   height: 100%;
   width: 100%;
+  fill: var(--text-color);
+}
+
+.weight-box {
+  fill: var(--bg-color);
+}
+
+.weight-label {
+  fill: var(--text-color);
+}
+
+.edge, .progress {
+  stroke: var(--text-color);
 }
 
 .WeightedGraph.selected .vertex.click-target {
@@ -48,7 +78,7 @@
 }
 
 .WeightedGraph.selected .vertex:not(.click-target) {
-  stroke: black;
+  stroke:var(--selected-vertex-color);
   fill: none;
 }
 

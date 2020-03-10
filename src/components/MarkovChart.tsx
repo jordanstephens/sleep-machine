@@ -77,13 +77,14 @@ const MarkovChart: React.FC<IMarkovChartProps> = ({
           if (selected) return;
           handleVertexClick(i);
         }}
-        selected={current}
+        selected1={current}
+        selected2={next}
       />
       {selected != null && (
         <WeightedGraph
           labels={labels}
           weights={editWeights[selected]}
-          selected={selected}
+          selected1={selected}
           className="selected"
           onVertexClick={handleVertexClick}
           onWeightDrag={handleWeightDrag}
