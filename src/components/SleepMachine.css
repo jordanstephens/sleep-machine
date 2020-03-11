@@ -7,19 +7,33 @@
   left: 0;
 }
 
+.ProgressMeter rect {
+  fill: transparent;
+}
+
+.ProgressMeter rect.on {
+  fill: var(--color-1);
+}
+
 @media screen and (orientation:portrait) {
   .SleepMachine { flex-direction: column; }
-  .Controls-container,
+  .Controls-container {
+    height: 30%;
+    width: 100%;
+  }
   .MarkovChart-container {
-    height: 50%;
+    height: 70%;
     width: 100%;
   }
 }
 @media screen and (orientation:landscape) {
   .SleepMachine { flex-direction: row; }
-  .Controls-container,
+  .Controls-container {
+    height: 100%;
+    width: 30%;
+  }
   .MarkovChart-container {
     height: 100%;
-    width: 50%;
+    width: 70%;
   }
 }

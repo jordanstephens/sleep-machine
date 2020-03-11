@@ -54,6 +54,7 @@ export default class Machine extends EventEmitter {
     Tone.Transport.loop = true;
     Tone.Transport.loopStart = 0;
     Tone.Transport.loopEnd = '1m';
+
     // half way through a loop
     Tone.Transport.scheduleRepeat(_.debounce((t: number) => {
       Tone.Draw.schedule(() => {
@@ -72,15 +73,20 @@ export default class Machine extends EventEmitter {
     }, 100), '1:0:0', '0:0:0');
 
     // quarter notes
-    Tone.Transport.scheduleRepeat(_.debounce((t: number) => {
+    Tone.Transport.scheduleRepeat((t: number) => {
+      Tone.Draw.schedule(() => {
+        const { position } = Tone.Transport
+        const beat = parseInt(position.split(':')[1], 10);
+        this.emit('beat', beat);
+      }, t);
+    }, '0:0:1', '0:0:0');
+
+    // eighth notes
+    Tone.Transport.scheduleRepeat((t: number) => {
       const i = rand(0, this.pattern.notes.length)
       const note = this.pattern.notes[i];
       this.synth.trigger(note);
-    }, 10), '0:0:2', '0:0:0');
-
-    Tone.Transport.scheduleRepeat((t: number) => {
-      this.emit('progress', Tone.Transport.progress);
-    }, '1i');
+    }, '0:0:2', '0:0:0');
   }
 
   get params(): Params {

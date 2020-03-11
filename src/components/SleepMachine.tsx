@@ -3,7 +3,6 @@ import './SleepMachine.css'
 import MarkovChart from './MarkovChart';
 import Controls from './Controls';
 import Machine, { Params } from '../lib/machine'
-import ProgressRing from './ProgressRing';
 
 const LABELS = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 const INITIAL_WEIGHTS = [
@@ -23,7 +22,7 @@ interface ISleepMachineProps {
 }
 
 const SleepMachine: React.FC<ISleepMachineProps> = () => {
-  const [progress, setProgress] = useState<number>(0.0);
+  const [beat, setBeat] = useState<number>(0);
   const [current, setCurrent] = useState<number>(0);
   const [next, setNext] = useState<number | undefined>(undefined);
 
@@ -33,8 +32,8 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
     }).on('change', (pattern, active) => {
       setNext(undefined);
       setCurrent(active);
-    }).on('progress', (progress) => {
-      setProgress(progress)
+    }).on('beat', (beat) => {
+      setBeat(beat)
     }).start();
 
     return () => machine.stop();
@@ -47,7 +46,6 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
   return (
     <div className="SleepMachine">
       <div className="MarkovChart-container">
-        <ProgressRing progress={progress} />
         <MarkovChart
           labels={LABELS}
           current={current}
@@ -58,6 +56,7 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
       </div>
       <div className="Controls-container">
         <Controls
+          beat={beat}
           params={machine.params}
           onChange={machine.updateParams}
         />
