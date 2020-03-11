@@ -37,3 +37,49 @@
     width: 70%;
   }
 }
+
+.ProgressMeter-container {
+  height: 2rem;
+  width: 2rem;
+  margin-right: 2rem;
+}
+
+.Controls-container {
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.Controls .form-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.Controls fieldset {
+  border: 0;
+  padding: 0;
+}
+
+.Controls .form-row {
+  display: flex;
+  flex-direction: row;;
+  margin-bottom: 1rem;
+}
+
+.RadioButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.RadioButton {
+  display: flex;
+  cursor: pointer;
+}
+
+.RadioButton .waveform-icon {
+  width: 2rem;
+}
+
+.RadioButtons svg {
+  fill: var(--text-color);
+}

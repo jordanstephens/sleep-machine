@@ -13,6 +13,7 @@ const ProgressMeter: React.FC<IProgressMeterProps> = ({ beat }) => (
   <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="ProgressMeter">
     {[0, 1, 3, 2].map((position, i) => (
       <rect
+        key={position}
         className={classnames({
           on: beat === position
         })}

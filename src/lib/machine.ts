@@ -4,8 +4,11 @@ import { EventEmitter } from 'events';
 
 const Tone = require('tone');
 
+export type Waveform = 'sine' | 'square' | 'triangle' | 'sawtooth'
+
 const DEFAULT_PARAMS = {
-  tempo: 90
+  tempo: 90,
+  waveform: 'sine' as Waveform
 };
 
 const C4 = 48;
@@ -28,6 +31,7 @@ const rand = (min: number, max: number) => Math.floor(Math.random() * (max - min
 
 export interface Params {
   tempo?: number;
+  waveform?: Waveform
 }
 
 export default class Machine extends EventEmitter {
@@ -41,7 +45,7 @@ export default class Machine extends EventEmitter {
   constructor(probabilities: number[][], params: Params = {}) {
     super();
     params = { ...DEFAULT_PARAMS, ...params }
-    this.synth = new Synth();
+    this.synth = new Synth(params);
     this.current = 0;
     this.range = 2;
     this.pattern = new ChordPattern(this.current, this.range);
@@ -56,21 +60,21 @@ export default class Machine extends EventEmitter {
     Tone.Transport.loopEnd = '1m';
 
     // half way through a loop
-    Tone.Transport.scheduleRepeat(_.debounce((t: number) => {
+    Tone.Transport.scheduleRepeat((t: number) => {
       Tone.Draw.schedule(() => {
         const next = this.next(this.current);
         this.emit('select', next, this.current)
         this.current = next;
       }, t);
-    }, 100), '1:0:0', '0:2:0');
+    }, '1:0:0', '0:2:0');
 
     // start of each loop
-    Tone.Transport.scheduleRepeat(_.debounce((t: number) => {
+    Tone.Transport.scheduleRepeat((t: number) => {
       Tone.Draw.schedule(() => {
         this.pattern = new ChordPattern(this.current, this.range);
         this.emit('change', this.pattern, this.current)
       }, t);
-    }, 100), '1:0:0', '0:0:0');
+    }, '1:0:0', '0:0:0');
 
     // quarter notes
     Tone.Transport.scheduleRepeat((t: number) => {
@@ -91,13 +95,17 @@ export default class Machine extends EventEmitter {
 
   get params(): Params {
     return {
-      tempo: Tone.Transport.bpm.value
+      tempo: Tone.Transport.bpm.value,
+      waveform: this.synth.waveform
     }
   }
 
-  updateParams(params: Params = {}) {
+  updateParams = (params: Params = {}) => {
     if (params.tempo) {
       Tone.Transport.bpm.value = params.tempo;
+    }
+    if (params.waveform) {
+      this.synth = new Synth(params);
     }
   }
 
@@ -135,12 +143,14 @@ class ChordPattern {
 class Synth {
   voice: any;
   width: number;
+  waveform: Waveform;
 
-  constructor() {
+  constructor(params: Params) {
     const delay = new Tone.FeedbackDelay('4n', 0.33)
     const chorus = new Tone.Chorus(4, 1.5, 0.25);
+    this.waveform = params.waveform || DEFAULT_PARAMS.waveform;
     this.voice = new Tone.PolySynth(4, Tone.Synth, {
-      oscillator: { type: 'sine' }
+      oscillator: { type: params.waveform }
     });
     this.voice.set({
       envelope: {
