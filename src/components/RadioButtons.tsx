@@ -19,7 +19,7 @@ const RadioButtons: React.FC<IProps> = ({ name, value, options, onChange }) => (
       <div className="RadioButton" key={_value}>
         <input
           type="radio"
-          name="waveform"
+          name={name}
           id={_value}
           value={_value}
           onChange={() => onChange(_value)}

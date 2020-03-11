@@ -5,9 +5,11 @@ import { EventEmitter } from 'events';
 const Tone = require('tone');
 
 export type Waveform = 'sine' | 'square' | 'triangle' | 'sawtooth'
+export type DelayTime = '1m' | '2n' | '4n' | '4t' | '8n' | '8t'
 
 const DEFAULT_PARAMS = {
   tempo: 90,
+  delay_time: '4n' as DelayTime,
   waveform: 'sine' as Waveform
 };
 
@@ -29,9 +31,16 @@ const ROOT_OFFSETS = [0, 2, 4, 5, 7, 9, 11];
 
 const rand = (min: number, max: number) => Math.floor(Math.random() * (max - min) + min);
 
-export interface Params {
+export interface PartialParams {
   tempo?: number;
-  waveform?: Waveform
+  waveform?: Waveform;
+  delay_time?: DelayTime;
+}
+
+export interface Params {
+  tempo: number;
+  waveform: Waveform;
+  delay_time: DelayTime;
 }
 
 export default class Machine extends EventEmitter {
@@ -42,10 +51,10 @@ export default class Machine extends EventEmitter {
   range: number;
   synth: Synth;
 
-  constructor(probabilities: number[][], params: Params = {}) {
+  constructor(probabilities: number[][], params: PartialParams = {}) {
     super();
     params = { ...DEFAULT_PARAMS, ...params }
-    this.synth = new Synth(params);
+    this.synth = new Synth(params as Params);
     this.current = 0;
     this.range = 2;
     this.pattern = new ChordPattern(this.current, this.range);
@@ -96,17 +105,15 @@ export default class Machine extends EventEmitter {
   get params(): Params {
     return {
       tempo: Tone.Transport.bpm.value,
+      delay_time: Tone.Time(this.synth.delay.delayTime.value).toNotation(),
       waveform: this.synth.waveform
     }
   }
 
-  updateParams = (params: Params = {}) => {
-    if (params.tempo) {
-      Tone.Transport.bpm.value = params.tempo;
-    }
-    if (params.waveform) {
-      this.synth = new Synth(params);
-    }
+  updateParams = (_params: PartialParams = {}) => {
+    const params = { ...this.params, ..._params };
+    Tone.Transport.bpm.value = params.tempo;
+    this.synth = new Synth(params);
   }
 
   updateProbabilities(probabilities: number[][]) {
@@ -141,12 +148,13 @@ class ChordPattern {
 }
 
 class Synth {
+  delay: any;
   voice: any;
   width: number;
   waveform: Waveform;
 
   constructor(params: Params) {
-    const delay = new Tone.FeedbackDelay('4n', 0.33)
+    this.delay = new Tone.FeedbackDelay(params.delay_time, 0.33)
     const chorus = new Tone.Chorus(4, 1.5, 0.25);
     this.waveform = params.waveform || DEFAULT_PARAMS.waveform;
     this.voice = new Tone.PolySynth(4, Tone.Synth, {
@@ -160,7 +168,7 @@ class Synth {
         decay: 0.5
       }
     })
-    this.voice.chain(chorus, delay, Tone.Master);
+    this.voice.chain(chorus, this.delay, Tone.Master);
     this.width = 0.1;
   }
 
