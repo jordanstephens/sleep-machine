@@ -10,22 +10,37 @@ export type DelayTime = '1m' | '2n' | '4n' | '4t' | '8n' | '8t'
 export interface PartialParams {
   tempo?: number;
   waveform?: Waveform;
+  delay_wet?: number;
   delay_time?: DelayTime;
   delay_feedback?: number;
+  chorus_frequency?: number;
+  chorus_delay_time?: number;
+  chorus_depth?: number;
+  width?: number;
 }
 
 export interface Params {
   tempo: number;
   waveform: Waveform;
+  delay_wet: number;
   delay_time: DelayTime;
   delay_feedback: number;
+  chorus_frequency: number;
+  chorus_delay_time: number;
+  chorus_depth: number;
+  width: number;
 }
 
 const DEFAULT_PARAMS: Params = {
   tempo: 90,
   waveform: 'sine',
+  delay_wet: 0.5,
   delay_time: '4n',
-  delay_feedback: 0.33
+  delay_feedback: 0.33,
+  chorus_frequency: 4,
+  chorus_delay_time: 1.5,
+  chorus_depth: 0.25,
+  width: 0.1,
 };
 
 const C4 = 48;
@@ -109,15 +124,20 @@ export default class Machine extends EventEmitter {
     return {
       tempo: Tone.Transport.bpm.value,
       waveform: this.synth.waveform,
+      delay_wet: this.synth.delay.wet.value,
       delay_time: Tone.Time(this.synth.delay.delayTime.value).toNotation(),
       delay_feedback: this.synth.delay.feedback.value,
+      chorus_frequency: this.synth.chorus.frequency.value,
+      chorus_delay_time: this.synth.chorus.delayTime,
+      chorus_depth: this.synth.chorus.depth,
+      width: this.synth.width,
     }
   }
 
   updateParams = (_params: PartialParams = {}) => {
     const params = { ...this.params, ..._params };
     Tone.Transport.bpm.value = params.tempo;
-    this.synth = new Synth(params);
+    this.synth.update(params);
   }
 
   updateProbabilities(probabilities: number[][]) {
@@ -153,16 +173,16 @@ class ChordPattern {
 
 class Synth {
   delay: any;
+  chorus: any;
   voice: any;
   width: number;
   waveform: Waveform;
 
   constructor(params: Params) {
-    this.delay = new Tone.FeedbackDelay(params.delay_time, params.delay_feedback)
-    const chorus_frequency = 4;
-    const chorus_delay_time = 1.5;
-    const chorus_depth = 0.25;
-    const chorus = new Tone.Chorus(chorus_frequency, chorus_delay_time, chorus_depth);
+    this.width = params.width;
+    this.delay = new Tone.PingPongDelay(params.delay_time, params.delay_feedback)
+    this.delay.wet.value = params.delay_wet;
+    this.chorus = new Tone.Chorus(params.chorus_frequency, params.chorus_delay_time, params.chorus_depth);
     this.waveform = params.waveform || DEFAULT_PARAMS.waveform;
     this.voice = new Tone.PolySynth(4, Tone.Synth, {
       oscillator: { type: params.waveform }
@@ -175,8 +195,21 @@ class Synth {
         decay: 0.5
       }
     })
-    this.voice.chain(chorus, this.delay, Tone.Master);
-    this.width = 0.1;
+    this.voice.chain(this.chorus, this.delay, Tone.Master);
+  }
+
+  update(params: Params) {
+    this.width = params.width;
+    this.voice.set({
+      oscillator: { type: params.waveform }
+    })
+
+    this.delay.wet.value = params.delay_wet;
+    this.delay.delayTime.value = params.delay_time;
+    this.delay.feedback.value = params.delay_feedback;
+    this.chorus.frequency.value = params.chorus_frequency;
+    this.chorus.delayTime = params.chorus_delay_time;
+    this.chorus.depth = params.chorus_depth;
   }
 
   trigger(note: number | string, velocity: number = 0.1) {

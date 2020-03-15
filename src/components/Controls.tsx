@@ -77,27 +77,43 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
           <RadioButtons
             name="waveform"
             value={params.waveform}
-            onChange={(waveform) => onChange({ waveform: waveform as Waveform })}
+            onChange={(value) => onChange({ waveform: value as Waveform })}
             options={WAVEFORM_OPTIONS}
           />
         </div>
       </fieldset>
       <fieldset className="form-col">
-        <label className="form-row" htmlFor="delay">
+        <label className="form-row" htmlFor="delay_wet">
+          Delay Wet
+        </label>
+        <div className="form-row">
+          <InputRange
+            name="delay_wet"
+            value={params.delay_wet}
+            minValue={0.0}
+            maxValue={1.0}
+            step={0.01}
+            onChange={(value) => onChange({ delay_wet: value as number })}
+            formatLabel={(value) => String(Math.round(value * 100.0))}
+          />
+        </div>
+      </fieldset>
+      <fieldset className="form-col">
+        <label className="form-row" htmlFor="delay_time">
           Delay Time
         </label>
         <div className="form-row">
           <RadioButtons
             name="delay_time"
             value={params.delay_time}
-            onChange={(delay_time) => onChange({ delay_time: delay_time as DelayTime })}
+            onChange={(value) => onChange({ delay_time: value as DelayTime })}
             options={DELAY_TIME_OPTIONS}
           />
         </div>
       </fieldset>
       <fieldset className="form-col">
-        <label className="form-row" htmlFor="delay">
-          Feedback
+        <label className="form-row" htmlFor="delay_feedback">
+          Delay Feedback
         </label>
         <div className="form-row">
           <InputRange
@@ -106,8 +122,72 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
             minValue={0.0}
             maxValue={1.0}
             step={0.01}
-            onChange={(delay_feedback) => onChange({ delay_feedback: delay_feedback as number })}
+            onChange={(value) => onChange({ delay_feedback: value as number })}
             formatLabel={(value) => String(Math.round(value * 100.0))}
+          />
+        </div>
+      </fieldset>
+      <fieldset className="form-col">
+        <label className="form-row" htmlFor="chorus_frequency">
+          Chorus Frequency
+        </label>
+        <div className="form-row">
+          <InputRange
+            name="chorus_frequency"
+            value={params.chorus_frequency}
+            minValue={0.0}
+            maxValue={20.0}
+            step={0.1}
+            onChange={(value) => onChange({ chorus_frequency: value as number })}
+            formatLabel={(value) => String(Math.round(value))}
+          />
+        </div>
+      </fieldset>
+      <fieldset className="form-col">
+        <label className="form-row" htmlFor="chorus_delay_time">
+          Chorus Delay Time
+        </label>
+        <div className="form-row">
+          <InputRange
+            name="chorus_delay_time"
+            value={params.chorus_delay_time}
+            minValue={0.0}
+            maxValue={20}
+            step={1.0}
+            onChange={(value) => onChange({ chorus_delay_time: value as number })}
+            formatLabel={(value) => String(Math.round(value))}
+          />
+        </div>
+      </fieldset>
+      <fieldset className="form-col">
+        <label className="form-row" htmlFor="chorus_depth">
+          Chorus Depth
+        </label>
+        <div className="form-row">
+          <InputRange
+            name="chorus_depth"
+            value={params.chorus_depth}
+            minValue={0.0}
+            maxValue={1.0}
+            step={0.01}
+            onChange={(value) => onChange({ chorus_depth: value as number })}
+            formatLabel={(value) => String(Math.round(value * 100.0))}
+          />
+        </div>
+      </fieldset>
+      <fieldset className="form-col">
+        <label className="form-row" htmlFor="width">
+          Pulse Width
+        </label>
+        <div className="form-row">
+          <InputRange
+            name="width"
+            value={params.width}
+            minValue={0.0}
+            maxValue={1.0}
+            step={0.1}
+            onChange={(value) => onChange({ width: value as number })}
+            formatLabel={(value) => value.toFixed(1)}
           />
         </div>
       </fieldset>

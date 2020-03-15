@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './SleepMachine.css'
 import MarkovChart from './MarkovChart';
 import Controls from './Controls';
-import Machine, { Params } from '../lib/machine'
+import Machine from '../lib/machine'
 
 const LABELS = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 const INITIAL_WEIGHTS = [
