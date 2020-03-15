@@ -1,4 +1,6 @@
 import React from 'react';
+import InputRange from 'react-input-range';
+import 'react-input-range/lib/css/index.css';
 import { Params, PartialParams, Waveform, DelayTime } from '../lib/machine'
 import ProgressMeter from './ProgressMeter';
 import Square from './icons/Square';
@@ -74,7 +76,7 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
         <div className="form-row">
           <RadioButtons
             name="waveform"
-            value={params.waveform || 'sine'}
+            value={params.waveform}
             onChange={(waveform) => onChange({ waveform: waveform as Waveform })}
             options={WAVEFORM_OPTIONS}
           />
@@ -82,14 +84,30 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
       </fieldset>
       <fieldset className="form-col">
         <label className="form-row" htmlFor="delay">
-          Delay
+          Delay Time
         </label>
         <div className="form-row">
           <RadioButtons
             name="delay_time"
-            value={params.delay_time || '4n'}
+            value={params.delay_time}
             onChange={(delay_time) => onChange({ delay_time: delay_time as DelayTime })}
             options={DELAY_TIME_OPTIONS}
+          />
+        </div>
+      </fieldset>
+      <fieldset className="form-col">
+        <label className="form-row" htmlFor="delay">
+          Feedback
+        </label>
+        <div className="form-row">
+          <InputRange
+            name="delay_feedback"
+            value={params.delay_feedback}
+            minValue={0.0}
+            maxValue={1.0}
+            step={0.01}
+            onChange={(delay_feedback) => onChange({ delay_feedback: delay_feedback as number })}
+            formatLabel={(value) => String(Math.round(value * 100.0))}
           />
         </div>
       </fieldset>

@@ -7,10 +7,25 @@ const Tone = require('tone');
 export type Waveform = 'sine' | 'square' | 'triangle' | 'sawtooth'
 export type DelayTime = '1m' | '2n' | '4n' | '4t' | '8n' | '8t'
 
-const DEFAULT_PARAMS = {
+export interface PartialParams {
+  tempo?: number;
+  waveform?: Waveform;
+  delay_time?: DelayTime;
+  delay_feedback?: number;
+}
+
+export interface Params {
+  tempo: number;
+  waveform: Waveform;
+  delay_time: DelayTime;
+  delay_feedback: number;
+}
+
+const DEFAULT_PARAMS: Params = {
   tempo: 90,
-  delay_time: '4n' as DelayTime,
-  waveform: 'sine' as Waveform
+  waveform: 'sine',
+  delay_time: '4n',
+  delay_feedback: 0.33
 };
 
 const C4 = 48;
@@ -30,18 +45,6 @@ const SCALE_DEGREE_TRIADS = [
 const ROOT_OFFSETS = [0, 2, 4, 5, 7, 9, 11];
 
 const rand = (min: number, max: number) => Math.floor(Math.random() * (max - min) + min);
-
-export interface PartialParams {
-  tempo?: number;
-  waveform?: Waveform;
-  delay_time?: DelayTime;
-}
-
-export interface Params {
-  tempo: number;
-  waveform: Waveform;
-  delay_time: DelayTime;
-}
 
 export default class Machine extends EventEmitter {
   generators: VoseAliasMethod[];
@@ -105,8 +108,9 @@ export default class Machine extends EventEmitter {
   get params(): Params {
     return {
       tempo: Tone.Transport.bpm.value,
+      waveform: this.synth.waveform,
       delay_time: Tone.Time(this.synth.delay.delayTime.value).toNotation(),
-      waveform: this.synth.waveform
+      delay_feedback: this.synth.delay.feedback.value,
     }
   }
 
@@ -154,8 +158,12 @@ class Synth {
   waveform: Waveform;
 
   constructor(params: Params) {
-    this.delay = new Tone.FeedbackDelay(params.delay_time, 0.33)
-    const chorus = new Tone.Chorus(4, 1.5, 0.25);
+    console.log(params)
+    this.delay = new Tone.FeedbackDelay(params.delay_time, params.delay_feedback)
+    const chorus_frequency = 4;
+    const chorus_delay_time = 1.5;
+    const chorus_depth = 0.25;
+    const chorus = new Tone.Chorus(chorus_frequency, chorus_delay_time, chorus_depth);
     this.waveform = params.waveform || DEFAULT_PARAMS.waveform;
     this.voice = new Tone.PolySynth(4, Tone.Synth, {
       oscillator: { type: params.waveform }
