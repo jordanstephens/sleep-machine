@@ -158,7 +158,6 @@ class Synth {
   waveform: Waveform;
 
   constructor(params: Params) {
-    console.log(params)
     this.delay = new Tone.FeedbackDelay(params.delay_time, params.delay_feedback)
     const chorus_frequency = 4;
     const chorus_delay_time = 1.5;

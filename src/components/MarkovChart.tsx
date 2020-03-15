@@ -24,7 +24,6 @@ function RangeMeter(dmax: number) {
       ? vmax - v0
       : v0 - vmin
 
-    console.log(v0, dmax, distance, vspan, p)
     return v0 + (p * vspan);
   }
 }
