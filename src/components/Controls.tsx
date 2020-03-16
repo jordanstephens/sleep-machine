@@ -82,6 +82,45 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
         </div>
       </fieldset>
       <fieldset className="form-col">
+        <label className="form-row" htmlFor="envelope">
+          Envelope
+        </label>
+        <div className="form-row">
+          <Slider
+            axis="y"
+            y={params.attack}
+            ymin={0.01}
+            ymax={1.0}
+            ystep={0.01}
+            onChange={({ y }) => onChange({ attack: y })}
+          />
+          <Slider
+            axis="y"
+            y={params.decay}
+            ymin={0.01}
+            ymax={1.0}
+            ystep={0.01}
+            onChange={({ y }) => onChange({ decay: y })}
+          />
+          <Slider
+            axis="y"
+            y={params.sustain}
+            ymin={0.01}
+            ymax={1.0}
+            ystep={0.01}
+            onChange={({ y }) => onChange({ sustain: y })}
+          />
+          <Slider
+            axis="y"
+            y={params.release}
+            ymin={0.01}
+            ymax={1.0}
+            ystep={0.01}
+            onChange={({ y }) => onChange({ release: y })}
+          />
+        </div>
+      </fieldset>
+      <fieldset className="form-col">
         <label className="form-row" htmlFor="delay_wet">
           Delay
         </label>

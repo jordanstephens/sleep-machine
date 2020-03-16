@@ -10,6 +10,10 @@ export type DelayTime = '1m' | '2n' | '4n' | '4t' | '8n' | '8t'
 export interface PartialParams {
   tempo?: number;
   waveform?: Waveform;
+  attack?: number;
+  decay?: number;
+  sustain?: number;
+  release?: number;
   delay_wet?: number;
   delay_time?: DelayTime;
   delay_feedback?: number;
@@ -22,6 +26,10 @@ export interface PartialParams {
 export interface Params {
   tempo: number;
   waveform: Waveform;
+  attack: number;
+  decay: number;
+  sustain: number;
+  release: number;
   delay_wet: number;
   delay_time: DelayTime;
   delay_feedback: number;
@@ -34,6 +42,10 @@ export interface Params {
 const DEFAULT_PARAMS: Params = {
   tempo: 90,
   waveform: 'sine',
+  attack: 0.01,
+  decay: 0.5,
+  sustain: 0.1,
+  release: 0.5,
   delay_wet: 0.5,
   delay_time: '4n',
   delay_feedback: 0.33,
@@ -123,7 +135,11 @@ export default class Machine extends EventEmitter {
   get params(): Params {
     return {
       tempo: Tone.Transport.bpm.value,
-      waveform: this.synth.waveform,
+      waveform: this.synth.voice.get('oscillator').oscillator.type,
+      attack: this.synth.voice.get('envelope').envelope.attack,
+      decay: this.synth.voice.get('envelope').envelope.decay,
+      sustain: this.synth.voice.get('envelope').envelope.sustain,
+      release: this.synth.voice.get('envelope').envelope.release,
       delay_wet: this.synth.delay.wet.value,
       delay_time: Tone.Time(this.synth.delay.delayTime.value).toNotation(),
       delay_feedback: this.synth.delay.feedback.value,
@@ -176,23 +192,21 @@ class Synth {
   chorus: any;
   voice: any;
   width: number;
-  waveform: Waveform;
 
   constructor(params: Params) {
     this.width = params.width;
     this.delay = new Tone.PingPongDelay(params.delay_time, params.delay_feedback)
     this.delay.wet.value = params.delay_wet;
     this.chorus = new Tone.Chorus(params.chorus_frequency, params.chorus_delay_time, params.chorus_depth);
-    this.waveform = params.waveform || DEFAULT_PARAMS.waveform;
     this.voice = new Tone.PolySynth(4, Tone.Synth, {
       oscillator: { type: params.waveform }
     });
     this.voice.set({
       envelope: {
-        attack: 0.01,
-        sustain: 0.1,
-        release: 0.5,
-        decay: 0.5
+        attack: params.attack,
+        decay: params.decay,
+        sustain: params.sustain,
+        release: params.release
       }
     })
     this.voice.chain(this.chorus, this.delay, Tone.Master);
@@ -201,7 +215,13 @@ class Synth {
   update(params: Params) {
     this.width = params.width;
     this.voice.set({
-      oscillator: { type: params.waveform }
+      oscillator: { type: params.waveform },
+      envelope: {
+        attack: params.attack,
+        decay: params.decay,
+        sustain: params.sustain,
+        release: params.release,
+      }
     })
 
     this.delay.wet.value = params.delay_wet;
