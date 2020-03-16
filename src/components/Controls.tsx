@@ -1,6 +1,5 @@
 import React from 'react';
-import InputRange from 'react-input-range';
-import 'react-input-range/lib/css/index.css';
+import Slider from 'react-input-slider';
 import { Params, PartialParams, Waveform, DelayTime } from '../lib/machine'
 import ProgressMeter from './ProgressMeter';
 import Square from './icons/Square';
@@ -84,17 +83,23 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
       </fieldset>
       <fieldset className="form-col">
         <label className="form-row" htmlFor="delay_wet">
-          Delay Wet
+          Delay
         </label>
         <div className="form-row">
-          <InputRange
-            name="delay_wet"
-            value={params.delay_wet}
-            minValue={0.0}
-            maxValue={1.0}
-            step={0.01}
-            onChange={(value) => onChange({ delay_wet: value as number })}
-            formatLabel={(value) => String(Math.round(value * 100.0))}
+          <Slider
+            axis="xy"
+            x={params.delay_feedback}
+            xmin={0.0}
+            xmax={1.0}
+            xstep={0.01}
+            y={params.delay_wet}
+            ymin={0.0}
+            ymax={1.0}
+            ystep={0.01}
+            onChange={({ x, y }) => onChange({
+              delay_feedback: x,
+              delay_wet: y
+            })}
           />
         </div>
       </fieldset>
@@ -112,66 +117,24 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
         </div>
       </fieldset>
       <fieldset className="form-col">
-        <label className="form-row" htmlFor="delay_feedback">
-          Delay Feedback
-        </label>
-        <div className="form-row">
-          <InputRange
-            name="delay_feedback"
-            value={params.delay_feedback}
-            minValue={0.0}
-            maxValue={1.0}
-            step={0.01}
-            onChange={(value) => onChange({ delay_feedback: value as number })}
-            formatLabel={(value) => String(Math.round(value * 100.0))}
-          />
-        </div>
-      </fieldset>
-      <fieldset className="form-col">
         <label className="form-row" htmlFor="chorus_frequency">
           Chorus Frequency
         </label>
         <div className="form-row">
-          <InputRange
-            name="chorus_frequency"
-            value={params.chorus_frequency}
-            minValue={0.0}
-            maxValue={20.0}
-            step={0.1}
-            onChange={(value) => onChange({ chorus_frequency: value as number })}
-            formatLabel={(value) => String(Math.round(value))}
-          />
-        </div>
-      </fieldset>
-      <fieldset className="form-col">
-        <label className="form-row" htmlFor="chorus_delay_time">
-          Chorus Delay Time
-        </label>
-        <div className="form-row">
-          <InputRange
-            name="chorus_delay_time"
-            value={params.chorus_delay_time}
-            minValue={0.0}
-            maxValue={20}
-            step={1.0}
-            onChange={(value) => onChange({ chorus_delay_time: value as number })}
-            formatLabel={(value) => String(Math.round(value))}
-          />
-        </div>
-      </fieldset>
-      <fieldset className="form-col">
-        <label className="form-row" htmlFor="chorus_depth">
-          Chorus Depth
-        </label>
-        <div className="form-row">
-          <InputRange
-            name="chorus_depth"
-            value={params.chorus_depth}
-            minValue={0.0}
-            maxValue={1.0}
-            step={0.01}
-            onChange={(value) => onChange({ chorus_depth: value as number })}
-            formatLabel={(value) => String(Math.round(value * 100.0))}
+          <Slider
+            axis="xy"
+            x={params.chorus_frequency}
+            xmin={0.0}
+            xmax={20.0}
+            xstep={0.1}
+            y={params.chorus_depth}
+            ymin={0.0}
+            ymax={1.0}
+            ystep={0.01}
+            onChange={({ x, y }) => onChange({
+              chorus_frequency: x,
+              chorus_depth: y
+            })}
           />
         </div>
       </fieldset>
@@ -180,14 +143,12 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
           Pulse Width
         </label>
         <div className="form-row">
-          <InputRange
-            name="width"
-            value={params.width}
-            minValue={0.0}
-            maxValue={1.0}
-            step={0.1}
-            onChange={(value) => onChange({ width: value as number })}
-            formatLabel={(value) => value.toFixed(1)}
+          <Slider
+            x={params.width}
+            xmin={0.0}
+            xmax={1.0}
+            xstep={0.1}
+            onChange={({ x }) => onChange({ width: x })}
           />
         </div>
       </fieldset>
