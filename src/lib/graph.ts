@@ -28,7 +28,8 @@ export function normalize_proportions(values: Vector = []) {
 }
 export function normalize_absolute(values: Vector = []) {
   if (!values.length) return [];
-  const src: Range = [0, Math.max(...values)];
+  const max = Math.max(...values)
+  const src: Range = [0, max === 0 ? 1 : max];
   const dst: Range = [0, 1];
   return values.map((value) => rmap(value, src, dst));
 }
