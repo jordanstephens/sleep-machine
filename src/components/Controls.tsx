@@ -65,6 +65,7 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
             onChange={(event) => onChange({
               tempo: parseInt(event.target.value, 10)
             })}
+            style={{ width: '8ch' }}
           />
         </div>
       </fieldset>
@@ -86,38 +87,52 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
           Envelope
         </label>
         <div className="form-row">
-          <Slider
-            axis="y"
-            y={params.attack}
-            ymin={0.01}
-            ymax={1.0}
-            ystep={0.01}
-            onChange={({ y }) => onChange({ attack: y })}
-          />
-          <Slider
-            axis="y"
-            y={params.decay}
-            ymin={0.01}
-            ymax={1.0}
-            ystep={0.01}
-            onChange={({ y }) => onChange({ decay: y })}
-          />
-          <Slider
-            axis="y"
-            y={params.sustain}
-            ymin={0.01}
-            ymax={1.0}
-            ystep={0.01}
-            onChange={({ y }) => onChange({ sustain: y })}
-          />
-          <Slider
-            axis="y"
-            y={params.release}
-            ymin={0.01}
-            ymax={1.0}
-            ystep={0.01}
-            onChange={({ y }) => onChange({ release: y })}
-          />
+          <div className="fader-bank">
+            <div className="fader-container">
+              <Slider
+                axis="y"
+                y={params.attack}
+                ymin={0.01}
+                ymax={1.0}
+                ystep={0.01}
+                onChange={({ y }) => onChange({ attack: y })}
+              />
+              <label className="fader-label">A</label>
+            </div>
+            <div className="fader-container">
+              <Slider
+                axis="y"
+                y={params.decay}
+                ymin={0.01}
+                ymax={1.0}
+                ystep={0.01}
+                onChange={({ y }) => onChange({ decay: y })}
+              />
+              <label className="fader-label">D</label>
+            </div>
+            <div className="fader-container">
+              <Slider
+                axis="y"
+                y={params.sustain}
+                ymin={0.01}
+                ymax={1.0}
+                ystep={0.01}
+                onChange={({ y }) => onChange({ sustain: y })}
+              />
+              <label className="fader-label">S</label>
+            </div>
+            <div className="fader-container">
+              <Slider
+                axis="y"
+                y={params.release}
+                ymin={0.01}
+                ymax={1.0}
+                ystep={0.01}
+                onChange={({ y }) => onChange({ release: y })}
+              />
+              <label className="fader-label">R</label>
+            </div>
+          </div>
         </div>
       </fieldset>
       <fieldset className="form-col">
@@ -139,6 +154,11 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
               delay_feedback: x,
               delay_wet: y
             })}
+            styles={{
+              track: {
+                width: '100%'
+              }
+            }}
           />
         </div>
       </fieldset>
@@ -174,6 +194,11 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
               chorus_frequency: x,
               chorus_depth: y
             })}
+            styles={{
+              track: {
+                width: '100%'
+              }
+            }}
           />
         </div>
       </fieldset>
@@ -188,6 +213,11 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
             xmax={1.0}
             xstep={0.1}
             onChange={({ x }) => onChange({ width: x })}
+            styles={{
+              track: {
+                width: '100%'
+              }
+            }}
           />
         </div>
       </fieldset>

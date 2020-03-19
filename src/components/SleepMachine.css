@@ -15,15 +15,24 @@
   fill: var(--color-1);
 }
 
+.Controls {
+  display: flex;
+}
+
 @media screen and (orientation:portrait) {
   .SleepMachine { flex-direction: column; }
   .Controls-container {
     height: 30%;
     width: 100%;
+    overflow-x: auto;
   }
   .MarkovChart-container {
     height: 70%;
     width: 100%;
+  }
+
+  .Controls {
+    flex-direction: row;
   }
 }
 @media screen and (orientation:landscape) {
@@ -31,10 +40,15 @@
   .Controls-container {
     height: 100%;
     width: 30%;
+    overflow-y: auto;
   }
   .MarkovChart-container {
     height: 100%;
     width: 70%;
+  }
+
+  .Controls {
+    flex-direction: column;
   }
 }
 
@@ -82,4 +96,20 @@
 
 .RadioButtons svg {
   fill: var(--text-color);
+}
+
+.fader-bank {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.fader-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.fader-label {
+  margin-top: 1rem;
 }
