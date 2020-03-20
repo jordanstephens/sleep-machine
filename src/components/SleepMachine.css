@@ -19,39 +19,6 @@
   display: flex;
 }
 
-@media screen and (orientation:portrait) {
-  .SleepMachine { flex-direction: column; }
-  .Controls-container {
-    height: 30%;
-    width: 100%;
-    overflow-x: auto;
-  }
-  .MarkovChart-container {
-    height: 70%;
-    width: 100%;
-  }
-
-  .Controls {
-    flex-direction: row;
-  }
-}
-@media screen and (orientation:landscape) {
-  .SleepMachine { flex-direction: row; }
-  .Controls-container {
-    height: 100%;
-    width: 30%;
-    overflow-y: auto;
-  }
-  .MarkovChart-container {
-    height: 100%;
-    width: 70%;
-  }
-
-  .Controls {
-    flex-direction: column;
-  }
-}
-
 .ProgressMeter-container {
   height: 2rem;
   width: 2rem;
@@ -112,4 +79,68 @@
 
 .fader-label {
   margin-top: 1rem;
+}
+
+.PlayButton-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.PlayPauseButton {
+  background: transparent;
+  border: 0;
+  display: block;
+  outline: 0;
+  cursor: pointer;
+
+  fill: white;
+  height: 8rem;
+  width: 8rem;
+}
+
+@media screen and (orientation:portrait) {
+  .SleepMachine { flex-direction: column; }
+  .Controls-container {
+    height: 30%;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .MarkovChart-container {
+    height: 70%;
+    width: 100%;
+  }
+
+  .Controls {
+    flex-direction: row;
+  }
+
+  .waveform .RadioButtons,
+  .delay-time .RadioButtons {
+    flex-direction: column;
+  }
+}
+
+@media screen and (orientation:landscape) {
+  .SleepMachine { flex-direction: row; }
+  .Controls-container {
+    height: 100%;
+    width: 30%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .MarkovChart-container {
+    height: 100%;
+    width: 70%;
+  }
+
+  .Controls {
+    flex-direction: column;
+  }
 }

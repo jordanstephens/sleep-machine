@@ -173,6 +173,14 @@ export default class Machine extends EventEmitter {
   stop() {
     Tone.Transport.stop();
   }
+
+  toggle() {
+    Tone.Transport.toggle()
+  }
+
+  get state() {
+    return Tone.Transport.state
+  }
 }
 
 class ChordPattern {

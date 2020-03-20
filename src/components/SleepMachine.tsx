@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './SleepMachine.css'
+import PlayPauseButton from './PlayPauseButton';
 import MarkovChart from './MarkovChart';
 import Controls from './Controls';
 import Machine from '../lib/machine'
@@ -17,11 +18,10 @@ const INITIAL_WEIGHTS = [
 
 const machine = new Machine(INITIAL_WEIGHTS);
 
-interface ISleepMachineProps {
+interface IProps { }
 
-}
-
-const SleepMachine: React.FC<ISleepMachineProps> = () => {
+const SleepMachine: React.FC<IProps> = () => {
+  const [playing, setPlaying] = useState<boolean>(false);
   const [beat, setBeat] = useState<number>(0);
   const [current, setCurrent] = useState<number>(0);
   const [next, setNext] = useState<number | undefined>(undefined);
@@ -34,13 +34,19 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
       setCurrent(active);
     }).on('beat', (beat) => {
       setBeat(beat)
-    }).start();
+    });
 
     return () => machine.stop();
   }, [])
 
   function handleWeightsChange(weights: number[][]) {
     machine.updateProbabilities(weights);
+  }
+
+  function handlePlayPause() {
+    const machineState = machine.state === 'started'
+    setPlaying(!machineState)
+    machine.toggle();
   }
 
   return (
@@ -53,6 +59,9 @@ const SleepMachine: React.FC<ISleepMachineProps> = () => {
           weights={machine.probabilities}
           onChange={handleWeightsChange}
         />
+        <div className="PlayButton-container">
+          <PlayPauseButton playing={playing} onClick={handlePlayPause} />
+        </div>
       </div>
       <div className="Controls-container">
         <Controls

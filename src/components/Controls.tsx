@@ -69,7 +69,7 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
           />
         </div>
       </fieldset>
-      <fieldset className="form-col">
+      <fieldset className="form-col waveform">
         <label className="form-row" htmlFor="waveform">
           Waveform
         </label>
@@ -162,7 +162,7 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
           />
         </div>
       </fieldset>
-      <fieldset className="form-col">
+      <fieldset className="form-col delay-time">
         <label className="form-row" htmlFor="delay_time">
           Delay Time
         </label>
