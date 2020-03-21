@@ -6,8 +6,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <h1>Sleep Machine</h1>
       </header>
-      <main>
+      <main className="App-main">
         <SleepMachine />
       </main>
     </div>

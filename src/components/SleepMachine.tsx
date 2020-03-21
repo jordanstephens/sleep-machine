@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './SleepMachine.css'
+import ProgressMeter from './ProgressMeter';
 import PlayPauseButton from './PlayPauseButton';
 import MarkovChart from './MarkovChart';
 import Controls from './Controls';
@@ -76,16 +77,33 @@ const SleepMachine: React.FC<IProps> = () => {
 
   return (
     <div className="SleepMachine">
-      <div className="MarkovChart-container">
-        <MarkovChart
-          labels={LABELS}
-          current={current}
-          next={next}
-          weights={machine.probabilities}
-          onChange={handleWeightsChange}
-        />
-        <div className="PlayButton-container">
-          <PlayPauseButton playing={playing} onClick={handlePlayPause} />
+      <div className="viz-container">
+        <div className="MarkovChart-container">
+          <MarkovChart
+            labels={LABELS}
+            current={current}
+            next={next}
+            weights={machine.probabilities}
+            onChange={handleWeightsChange}
+          />
+        </div>
+        <div className="transport-controls-container">
+          <div className="transport-controls">
+            <PlayPauseButton playing={playing} onClick={handlePlayPause} />
+            <div className="ProgressMeter-container">
+              <ProgressMeter beat={beat} />
+            </div>
+            <input
+              type="number"
+              id="tempo"
+              name="tempo"
+              value={machine.params.tempo}
+              onChange={(event) => machine.updateParams({
+                tempo: parseInt(event.target.value, 10)
+              })}
+              style={{ width: '8ch' }}
+            />
+          </div>
         </div>
       </div>
       <div className="Controls-container">

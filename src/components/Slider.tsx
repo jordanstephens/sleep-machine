@@ -19,8 +19,6 @@ const Slider: React.FC<IProps> = ({ x, y, onChange, ...props }) => {
     onChange(values);
   }
 
-  dragging && console.log(values, { x, y })
-
   return (
     <ReactInputSlider
       {...props}

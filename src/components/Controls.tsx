@@ -1,7 +1,6 @@
 import React from 'react';
 import Slider from './Slider';
 import { Params, PartialParams, Waveform, DelayTime } from '../lib/machine'
-import ProgressMeter from './ProgressMeter';
 import Square from './icons/Square';
 import Circle from './icons/Circle';
 import Triangle from './icons/Triangle';
@@ -49,26 +48,6 @@ interface IControlsProps {
 const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
   return (
     <form className="Controls">
-      <fieldset className="form-col">
-        <label className="form-row" htmlFor="tempo">
-          Tempo
-        </label>
-        <div className="form-row">
-          <div className="ProgressMeter-container">
-            <ProgressMeter beat={beat} />
-          </div>
-          <input
-            type="number"
-            id="tempo"
-            name="tempo"
-            value={params.tempo}
-            onChange={(event) => onChange({
-              tempo: parseInt(event.target.value, 10)
-            })}
-            style={{ width: '8ch' }}
-          />
-        </div>
-      </fieldset>
       <fieldset className="form-col waveform">
         <label className="form-row" htmlFor="waveform">
           Waveform

@@ -1,10 +1,54 @@
 .SleepMachine {
-  display: flex;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+  display: flex;
+  flex-grow: 1;
+}
+
+.viz-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.MarkovChart-container {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  flex-grow: 1;
+  position: relative;
+}
+
+.MarkovChart {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.MarkovChart .WeightedGraph {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.SleepMachine-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transport-controls {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
 }
 
 .ProgressMeter rect {
@@ -17,17 +61,13 @@
 
 .Controls {
   display: flex;
+  padding: 2rem;
 }
 
 .ProgressMeter-container {
   height: 2rem;
   width: 2rem;
   margin-right: 2rem;
-}
-
-.Controls-container {
-  padding: 2rem;
-  box-sizing: border-box;
 }
 
 .Controls .form-col {
@@ -81,17 +121,6 @@
   margin-top: 1rem;
 }
 
-.PlayButton-container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .PlayPauseButton {
   background: transparent;
   border: 0;
@@ -100,20 +129,20 @@
   cursor: pointer;
 
   fill: white;
-  height: 8rem;
-  width: 8rem;
+  height: 3rem;
+  width: 3rem;
 }
 
 @media screen and (orientation:portrait) {
   .SleepMachine { flex-direction: column; }
   .Controls-container {
-    height: 30%;
+    height: 300px;
     width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
   }
-  .MarkovChart-container {
-    height: 70%;
+  .viz-container {
+    height: calc(100% - 300px);
     width: 100%;
   }
 
@@ -131,13 +160,13 @@
   .SleepMachine { flex-direction: row; }
   .Controls-container {
     height: 100%;
-    width: 30%;
+    width: 300px;
     overflow-x: hidden;
     overflow-y: auto;
   }
-  .MarkovChart-container {
+  .viz-container {
     height: 100%;
-    width: 70%;
+    width: calc(100% - 300px);
   }
 
   .Controls {

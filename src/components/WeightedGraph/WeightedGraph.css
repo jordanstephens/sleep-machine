@@ -29,30 +29,6 @@
   fill: transparent;
 }
 
-.MarkovChart-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding: 2rem;
-  box-sizing: border-box;
-}
-
-.MarkovChart {
-  position: absolute;
-  top: 4rem;
-  right: 4rem;
-  bottom: 4rem;
-  left: 4rem;
-}
-
-.MarkovChart .WeightedGraph {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
 .WeightedGraph svg {
   display: block;
   height: 100%;
