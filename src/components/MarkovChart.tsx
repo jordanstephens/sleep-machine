@@ -45,7 +45,7 @@ const MarkovChart: React.FC<IMarkovChartProps> = ({
   }
 
   function handleWeightDrag(event: DragEvent) {
-    if (!selected) return;
+    if (selected == null) return;
     const index = parseInt(event.id, 10);
     const values_0 = [...weights[selected]];
     const v0 = values_0[index];
