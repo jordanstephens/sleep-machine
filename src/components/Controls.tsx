@@ -1,5 +1,5 @@
 import React from 'react';
-import Slider from 'react-input-slider';
+import Slider from './Slider';
 import { Params, PartialParams, Waveform, DelayTime } from '../lib/machine'
 import ProgressMeter from './ProgressMeter';
 import Square from './icons/Square';
@@ -156,6 +156,7 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
             })}
             styles={{
               track: {
+                cursor: 'move',
                 width: '100%'
               }
             }}
@@ -196,6 +197,7 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
             })}
             styles={{
               track: {
+                cursor: 'move',
                 width: '100%'
               }
             }}
@@ -215,6 +217,7 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
             onChange={({ x }) => onChange({ width: x })}
             styles={{
               track: {
+                cursor: 'move',
                 width: '100%'
               }
             }}
