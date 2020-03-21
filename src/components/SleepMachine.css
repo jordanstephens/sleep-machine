@@ -89,20 +89,50 @@
 .RadioButtons {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  flex-grow: 1;
+  --border-radius: 4px;
+  --bg-color: hsla(0, 0%, 0%, 0.4)
 }
 
 .RadioButton {
   display: flex;
+  flex-grow: 1;
+}
+
+.RadioButton:first-child label { border-radius: var(--border-radius) 0 0 var(--border-radius); }
+.RadioButton:last-child label { border-radius: 0 var(--border-radius) var(--border-radius) 0; }
+
+.RadioButton label {
+  background: var(--bg-color);
+  border: 1px solid var(--bg-color);
+  cursor: pointer;
+  height: 55px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: larger;
+  font-weight: bolder;
+  color: grey;
+  fill: grey;
+}
+
+.RadioButton input {
+  display: none;
   cursor: pointer;
 }
 
-.RadioButton .waveform-icon {
-  width: 2rem;
+.RadioButton input:checked + label {
+  color: white;
+}
+.RadioButton input:checked + label svg {
+  fill: white;
 }
 
-.RadioButtons svg {
-  fill: var(--text-color);
+.RadioButton .waveform-icon {
+  max-height: 100%;
+  width: 50%;
 }
 
 .fader-bank {
@@ -146,14 +176,16 @@
     width: 100%;
   }
 
-  .Controls {
-    flex-direction: row;
-  }
-
+  .Controls { flex-direction: row; }
+  .Controls .form-col { margin-right: 2rem; flex-shrink: 0; width: 100px; }
   .waveform .RadioButtons,
   .delay-time .RadioButtons {
     flex-direction: column;
+    width: 60px;
+    flex-grow: 0;
   }
+
+  .landscape { display: none;}
 }
 
 @media screen and (orientation:landscape) {
@@ -172,4 +204,6 @@
   .Controls {
     flex-direction: column;
   }
+
+  .portrait { display: none;}
 }

@@ -7,6 +7,9 @@ import Triangle from './icons/Triangle';
 import Sawtooth from './icons/Sawtooth';
 import RadioButtons from './RadioButtons';
 
+const BG_COLOR = 'hsla(0, 0%, 0%, 0.4)'
+const FG_COLOR = 'grey'
+
 const WAVEFORM_OPTIONS = [
   {
     value: 'sine',
@@ -31,8 +34,6 @@ const WAVEFORM_OPTIONS = [
 ]
 
 const DELAY_TIME_OPTIONS = [
-  { value: '1m', label: '1' },
-  { value: '2n', label: '2' },
   { value: '4n', label: '4' },
   { value: '4t', label: '4t' },
   { value: '8n', label: '8' },
@@ -45,7 +46,7 @@ interface IControlsProps {
   onChange: (params: PartialParams) => void;
 }
 
-const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
+const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
   return (
     <form className="Controls">
       <fieldset className="form-col waveform">
@@ -61,7 +62,7 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
           />
         </div>
       </fieldset>
-      <fieldset className="form-col">
+      <fieldset className="form-col envelope">
         <label className="form-row" htmlFor="envelope">
           Envelope
         </label>
@@ -75,6 +76,16 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
                 ymax={1.0}
                 ystep={0.01}
                 onChange={({ y }) => onChange({ attack: y })}
+                styles={{
+                  active: {
+                    background: FG_COLOR
+                  },
+                  track: {
+                    background: BG_COLOR,
+                    cursor: 'move-y',
+                    height: '200px'
+                  }
+                }}
               />
               <label className="fader-label">A</label>
             </div>
@@ -86,6 +97,16 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
                 ymax={1.0}
                 ystep={0.01}
                 onChange={({ y }) => onChange({ decay: y })}
+                styles={{
+                  active: {
+                    background: FG_COLOR
+                  },
+                  track: {
+                    background: BG_COLOR,
+                    cursor: 'move-y',
+                    height: '200px'
+                  }
+                }}
               />
               <label className="fader-label">D</label>
             </div>
@@ -97,6 +118,16 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
                 ymax={1.0}
                 ystep={0.01}
                 onChange={({ y }) => onChange({ sustain: y })}
+                styles={{
+                  active: {
+                    background: FG_COLOR
+                  },
+                  track: {
+                    background: BG_COLOR,
+                    cursor: 'move-y',
+                    height: '200px'
+                  }
+                }}
               />
               <label className="fader-label">S</label>
             </div>
@@ -108,13 +139,23 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
                 ymax={1.0}
                 ystep={0.01}
                 onChange={({ y }) => onChange({ release: y })}
+                styles={{
+                  active: {
+                    background: FG_COLOR
+                  },
+                  track: {
+                    background: BG_COLOR,
+                    cursor: 'move-y',
+                    height: '200px'
+                  }
+                }}
               />
               <label className="fader-label">R</label>
             </div>
           </div>
         </div>
       </fieldset>
-      <fieldset className="form-col">
+      <fieldset className="form-col delay">
         <label className="form-row" htmlFor="delay_wet">
           Delay
         </label>
@@ -135,8 +176,10 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
             })}
             styles={{
               track: {
+                background: BG_COLOR,
+                borderRadius: '4px',
                 cursor: 'move',
-                width: '100%'
+                width: '220px'
               }
             }}
           />
@@ -155,9 +198,9 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
           />
         </div>
       </fieldset>
-      <fieldset className="form-col">
+      <fieldset className="form-col chorus">
         <label className="form-row" htmlFor="chorus_frequency">
-          Chorus Frequency
+          Chorus
         </label>
         <div className="form-row">
           <Slider
@@ -176,31 +219,60 @@ const Controls: React.FC<IControlsProps> = ({ beat, params, onChange }) => {
             })}
             styles={{
               track: {
+                background: BG_COLOR,
+                borderRadius: '4px',
                 cursor: 'move',
-                width: '100%'
+                width: '220px'
               }
             }}
           />
         </div>
       </fieldset>
-      <fieldset className="form-col">
+      <fieldset className="form-col pulse-width">
         <label className="form-row" htmlFor="width">
           Pulse Width
         </label>
         <div className="form-row">
-          <Slider
-            x={params.width}
-            xmin={0.0}
-            xmax={1.0}
-            xstep={0.1}
-            onChange={({ x }) => onChange({ width: x })}
-            styles={{
-              track: {
-                cursor: 'move',
-                width: '100%'
-              }
-            }}
-          />
+          <div className="landscape">
+            <Slider
+              axis="x"
+              x={params.width}
+              xmin={0.0}
+              xmax={1.0}
+              xstep={0.1}
+              onChange={({ x }) => onChange({ width: x })}
+              styles={{
+                active: {
+                  background: FG_COLOR,
+                },
+                track: {
+                  background: BG_COLOR,
+                  cursor: 'move',
+                  width: '220px'
+                }
+              }}
+            />
+          </div>
+          <div className="portrait">
+            <Slider
+              axis="y"
+              y={params.width}
+              ymin={0.0}
+              ymax={1.0}
+              ystep={0.1}
+              onChange={({ y }) => onChange({ width: y })}
+              styles={{
+                active: {
+                  background: FG_COLOR,
+                },
+                track: {
+                  background: BG_COLOR,
+                  cursor: 'move',
+                  height: '200px'
+                }
+              }}
+            />
+          </div>
         </div>
       </fieldset>
     </form>
