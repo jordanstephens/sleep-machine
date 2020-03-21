@@ -17,13 +17,9 @@ const Node: React.FC<INodeProps> = ({ point, radius, weight, className, onClick 
     <circle
       cx={rel2abs(x)}
       cy={rel2abs(y)}
-      r={radius}
+      r={radius * weight}
       className={classnames('vertex', className)}
       onClick={onClick}
-      style={{
-        transform: `scale(${weight})`,
-        transformOrigin: `${rel2abs(x)}% ${rel2abs(y)}%`,
-      }}
     />
   )
 }
