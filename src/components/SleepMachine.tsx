@@ -20,7 +20,7 @@ const machine = new Machine(INITIAL_WEIGHTS);
 
 interface IProps { }
 
-const SleepMachine: React.FC<IProps> = () => {
+function useMachine(machine: Machine): [number, number, number | undefined, boolean, (playing: boolean) => void] {
   const [playing, setPlaying] = useState<boolean>(false);
   const [beat, setBeat] = useState<number>(0);
   const [current, setCurrent] = useState<number>(0);
@@ -39,14 +39,39 @@ const SleepMachine: React.FC<IProps> = () => {
     return () => machine.stop();
   }, [])
 
-  function handleWeightsChange(weights: number[][]) {
-    machine.updateProbabilities(weights);
-  }
+  return [beat, current, next, playing, setPlaying]
+}
+
+const KEYCODE = {
+  SPACEBAR: 32
+};
+
+const SleepMachine: React.FC<IProps> = () => {
+  const [beat, current, next, playing, setPlaying] = useMachine(machine)
 
   function handlePlayPause() {
     const machineState = machine.state === 'started'
     setPlaying(!machineState)
     machine.toggle();
+  }
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      // TODO: on my machine, spacebar will toggle a focused button element.
+      // this means that if the PlayPauseButton is focused then spacebar
+      // keypresses will toggle the machine state twice. as a work around.
+      // we can ignore spacebar keypresses if the activeElement is the
+      // PlayPauseButton. it might be safer to use a throttle or debounce
+      // here instead
+      if (document.activeElement?.classList.contains('PlayPauseButton')) return
+      if (event.keyCode === KEYCODE.SPACEBAR) return handlePlayPause();
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  function handleWeightsChange(weights: number[][]) {
+    machine.updateProbabilities(weights);
   }
 
   return (
