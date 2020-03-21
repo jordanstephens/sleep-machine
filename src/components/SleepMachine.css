@@ -4,6 +4,34 @@
   flex-direction: column;
 }
 
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: hsla(0, 0%, 0%, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-message {
+  cursor: pointer;
+  background: hsla(0, 0%, 100%, 0.1);
+  border-radius: 4px;
+  padding: 2rem;
+  height: 150px;
+  width: 150px;
+  font-size: larger;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .SleepMachine-header {
   display: flex;
   padding: 2rem
@@ -186,13 +214,13 @@
 @media screen and (orientation:portrait) {
   .SleepMachine { flex-direction: column; }
   .Controls-container {
-    height: 300px;
+    height: 340px;
     width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
   }
   .viz-container {
-    height: calc(100% - 300px);
+    height: calc(100% - 340px);
     width: 100%;
   }
 
