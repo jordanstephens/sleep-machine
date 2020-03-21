@@ -34,10 +34,10 @@ const WAVEFORM_OPTIONS = [
 ]
 
 const DELAY_TIME_OPTIONS = [
-  { value: '4n', label: '4' },
   { value: '4t', label: '4t' },
-  { value: '8n', label: '8' },
-  { value: '8t', label: '8t' }
+  { value: '4n', label: '4' },
+  { value: '8t', label: '8t' },
+  { value: '8n', label: '8' }
 ]
 
 interface IControlsProps {
