@@ -2,7 +2,7 @@
   "name": "sleep-machine",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jordanstephens.github.io/sleep-machine",
+  "homepage": "./",
   "dependencies": {
     "classnames": "^2.2.6",
     "gh-pages": "^2.2.0",
