@@ -2,8 +2,10 @@
   "name": "sleep-machine",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://jordanstephens.github.io/sleep-machine",
   "dependencies": {
     "classnames": "^2.2.6",
+    "gh-pages": "^2.2.0",
     "lodash": "^4.17.15",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
@@ -16,6 +18,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "react-scripts build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
