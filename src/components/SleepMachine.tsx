@@ -76,22 +76,18 @@ const SleepMachine: React.FC<IProps> = () => {
   }
 
   return (
-    <div className="SleepMachine">
-      <div className="viz-container">
-        <div className="MarkovChart-container">
-          <MarkovChart
-            labels={LABELS}
-            current={current}
-            next={next}
-            weights={machine.probabilities}
-            onChange={handleWeightsChange}
-          />
-        </div>
+    <div className="SleepMachine-container">
+      <header className="SleepMachine-header">
+        <h1 className="wordmark">Zzz Machine</h1>
         <div className="transport-controls-container">
           <div className="transport-controls">
-            <PlayPauseButton playing={playing} onClick={handlePlayPause} />
             <div className="ProgressMeter-container">
-              <ProgressMeter beat={beat} />
+              {playing
+                ? (
+                  <ProgressMeter beat={beat} />
+                )
+                : <PlayPauseButton playing={playing} onClick={handlePlayPause} />
+              }
             </div>
             <input
               type="number"
@@ -101,18 +97,33 @@ const SleepMachine: React.FC<IProps> = () => {
               onChange={(event) => machine.updateParams({
                 tempo: parseInt(event.target.value, 10)
               })}
-              style={{ width: '8ch' }}
+              style={{ width: '5ch' }}
             />
           </div>
         </div>
-      </div>
-      <div className="Controls-container">
-        <Controls
-          beat={beat}
-          params={machine.params}
-          onChange={machine.updateParams}
-        />
-      </div>
+      </header>
+      <main className="App-main">
+        <div className="SleepMachine">
+          <div className="viz-container">
+            <div className="MarkovChart-container">
+              <MarkovChart
+                labels={LABELS}
+                current={current}
+                next={next}
+                weights={machine.probabilities}
+                onChange={handleWeightsChange}
+              />
+            </div>
+          </div>
+          <div className="Controls-container">
+            <Controls
+              beat={beat}
+              params={machine.params}
+              onChange={machine.updateParams}
+            />
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

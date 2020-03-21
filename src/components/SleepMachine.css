@@ -1,3 +1,18 @@
+.SleepMachine-container {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.SleepMachine-header {
+  display: flex;
+  padding: 2rem
+}
+
+.wordmark {
+  margin: 0;
+}
+
 .SleepMachine {
   position: absolute;
   top: 0;
@@ -48,7 +63,13 @@
 .transport-controls {
   display: flex;
   justify-content: center;
-  padding: 2rem 0;
+}
+
+.transport-controls input[type="number"] {
+  background: transparent;
+  border: none;
+  font-size: larger;
+  color: var(--text-color);
 }
 
 .ProgressMeter rect {
@@ -159,8 +180,7 @@
   cursor: pointer;
 
   fill: white;
-  height: 3rem;
-  width: 3rem;
+  height: 100%;
 }
 
 @media screen and (orientation:portrait) {
