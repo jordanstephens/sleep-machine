@@ -164,7 +164,7 @@ const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
             <Slider
               axis="x"
               x={params.width}
-              xmin={0.0}
+              xmin={0.1}
               xmax={1.0}
               xstep={0.1}
               onChange={({ x }) => onChange({ width: x })}
@@ -184,7 +184,7 @@ const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
             <Slider
               axis="y"
               y={params.width}
-              ymin={0.0}
+              ymin={0.1}
               ymax={1.0}
               ystep={0.1}
               onChange={({ y }) => onChange({ width: y })}
