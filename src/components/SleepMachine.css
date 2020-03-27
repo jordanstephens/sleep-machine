@@ -42,6 +42,15 @@
   margin: 0;
 }
 
+.wordmark small {
+  font-weight: normal;
+}
+
+.wordmark a {
+  color: var(--color-1);
+  text-decoration: none;
+}
+
 .SleepMachine {
   position: absolute;
   top: 0;

@@ -84,7 +84,10 @@ const SleepMachine: React.FC<IProps> = () => {
   return (
     <div className="SleepMachine-container">
       <header className="SleepMachine-header">
-        <h1 className="wordmark">Zzz Machine</h1>
+        <h1 className="wordmark">
+          <span>Zzz Machine</span><br />
+          <small><em>by <a href="https://twitter.com/jordanstpehens">@jordanstephens</a></em></small>
+        </h1>
         <div className="transport-controls-container">
           <div className="transport-controls">
             <div className="ProgressMeter-container">
