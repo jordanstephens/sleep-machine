@@ -34,10 +34,11 @@
 
 .SleepMachine-header {
   display: flex;
-  padding: 2rem
+  padding: 1rem
 }
 
 .wordmark {
+  font-size: 1rem;
   margin: 0;
 }
 
