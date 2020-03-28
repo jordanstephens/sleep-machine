@@ -16,15 +16,19 @@ interface IProps extends InputProps {
 }
 
 const NumberInput: React.FC<IProps> = ({ min, max, step, value, onChange, ...props }) => {
-  const valid = (value: number) => !isNaN(value) && min < value && value < max
+  const valid = (value: number) => !isNaN(value) && min <= value && value <= max
   if (!valid(value)) throw new Error(`invalid value "${value}"`);
   const updateValue = throttle(onChange);
   const [localValue, setLocalValue] = useState<number>(value);
 
 
-  function commitChange(value: number) {
-    setLocalValue(value);
-    updateValue(value);
+  function commitChange(_value: number) {
+    if (valid(_value)) {
+      setLocalValue(_value);
+      updateValue(_value);
+    } else {
+      setLocalValue(value);
+    }
   }
 
   function handleInputChange(event: React.ChangeEvent) {
@@ -34,13 +38,22 @@ const NumberInput: React.FC<IProps> = ({ min, max, step, value, onChange, ...pro
 
   function handleBlur(event: React.SyntheticEvent) {
     const target = event.target as HTMLInputElement;
-    const _value = parseInt(target.value, 10);
-    if (valid(_value)) return commitChange(_value);
-    setLocalValue(value)
+    const value = parseInt(target.value, 10);
+    commitChange(value);
   }
 
-  const increment = () => commitChange(localValue + step)
-  const decrement = () => commitChange(localValue - step)
+  const increment = () => {
+    const value = localValue + step;
+    if (!valid(value)) return;
+    commitChange(value)
+  }
+
+  const decrement = () => {
+    const value = localValue - step;
+    if (!valid(value)) return;
+    commitChange(value)
+  }
+
   const keyHandlers = {
     [KEY.DOWN]: decrement,
     [KEY.UP]: increment
