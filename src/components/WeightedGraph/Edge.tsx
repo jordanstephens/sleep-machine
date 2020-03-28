@@ -46,6 +46,16 @@ interface IEdgeProps {
   selected?: boolean;
 }
 
+const RECT = {
+  WIDTH: 8,
+  HEIGHT: 8
+}
+
+const TRIANGLE = {
+  WIDTH: 1.5,
+  HEIGHT: 1
+}
+
 const Edge: React.FC<IEdgeProps> = ({ id, p1, p2, weight, selected }) => {
   const [x1, y1, x2, y2] = endpoints(p1, p2);
   const x = Math.min(x1, x2);
@@ -54,10 +64,18 @@ const Edge: React.FC<IEdgeProps> = ({ id, p1, p2, weight, selected }) => {
   const height = Math.max(y1, y2) - y;
   const midpoint_x = x + (width / 2);
   const midpoint_y = y + (height / 2);
-  const rect_w = 8;
-  const rect_h = 4;
-  const rect_x = midpoint_x - (rect_w / 2);
-  const rect_y = midpoint_y - (rect_h / 2);
+  const rect_x = midpoint_x - (RECT.WIDTH / 2);
+  const rect_y = midpoint_y - (RECT.HEIGHT / 2);
+  const t1_points = [
+    [midpoint_x - (TRIANGLE.WIDTH / 2), midpoint_y - (RECT.HEIGHT / 2)],
+    [midpoint_x, midpoint_y - (RECT.HEIGHT / 2) - TRIANGLE.HEIGHT],
+    [midpoint_x + (TRIANGLE.WIDTH / 2), midpoint_y - (RECT.HEIGHT / 2)],
+  ].map((x) => x.join(','))
+  const t2_points = [
+    [midpoint_x - (TRIANGLE.WIDTH / 2), midpoint_y + (RECT.HEIGHT / 2)],
+    [midpoint_x, midpoint_y + (RECT.HEIGHT / 2) + TRIANGLE.HEIGHT],
+    [midpoint_x + (TRIANGLE.WIDTH / 2), midpoint_y + (RECT.HEIGHT / 2)],
+  ].map((x) => x.join(','))
   return (
     <g>
       <line
@@ -72,12 +90,31 @@ const Edge: React.FC<IEdgeProps> = ({ id, p1, p2, weight, selected }) => {
         markerEnd={selected ? 'url(#selected-arrow)' : 'url(#arrow)'}
       />
       {weight && (
-        <g>
+        <g data-index={id}>
           <Draggable id={id} enabled={true}>
-            <rect x={rect_x} y={rect_y} width={rect_w} height={rect_h} className="weight-box" />
-            <text x={midpoint_x} y={midpoint_y} className="weight-label" style={{ fontSize: 3, cursor: 'ns-resize', userSelect: 'none' }} dominantBaseline="middle" textAnchor="middle">
+            <rect
+              x={rect_x}
+              y={rect_y}
+              width={RECT.WIDTH}
+              height={RECT.HEIGHT}
+              className="weight-box"
+            />
+            <text
+              x={midpoint_x}
+              y={midpoint_y}
+              className="weight-label"
+              style={{
+                fontSize: 3,
+                cursor: 'ns-resize',
+                userSelect: 'none'
+              }}
+              dominantBaseline="middle"
+              textAnchor="middle"
+            >
               {format_weight(weight)}
             </text>
+            <polygon className="edge-drag-triangle-up" points={t1_points.join(' ')} />
+            <polygon className="edge-drag-triangle-down" points={t2_points.join(' ')} />
           </Draggable>
         </g>
       )}
