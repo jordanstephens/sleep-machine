@@ -22,15 +22,13 @@ const machine = new Machine(INITIAL_WEIGHTS);
 
 interface IProps { }
 
-function useMachine(machine: Machine): [number, number, number | undefined, boolean, boolean, (playing: boolean) => void] {
-  const [started, setStarted] = useState<boolean>(false);
+function useMachine(machine: Machine): [number, number, number | undefined, boolean, (playing: boolean) => void] {
   const [playing, _setPlaying] = useState<boolean>(false);
   const [beat, setBeat] = useState<number>(0);
   const [current, setCurrent] = useState<number>(0);
   const [next, setNext] = useState<number | undefined>(undefined);
 
   function setPlaying(value: boolean) {
-    setStarted(true);
     _setPlaying(value);
   }
 
@@ -47,7 +45,7 @@ function useMachine(machine: Machine): [number, number, number | undefined, bool
     return () => machine.stop();
   }, [])
 
-  return [beat, current, next, started, playing, setPlaying]
+  return [beat, current, next, playing, setPlaying]
 }
 
 const KEYCODE = {
@@ -55,7 +53,7 @@ const KEYCODE = {
 };
 
 const SleepMachine: React.FC<IProps> = () => {
-  const [beat, current, next, started, playing, setPlaying] = useMachine(machine)
+  const [beat, current, next, playing, setPlaying] = useMachine(machine)
 
   function handlePlayPause() {
     const machineState = machine.state === 'started'
@@ -111,7 +109,7 @@ const SleepMachine: React.FC<IProps> = () => {
         </div>
       </header>
       <main className="App-main">
-        {!started && (
+        {!playing && (
           <div className="overlay">
             <div className="start-message" onClick={handlePlayPause}>
               <div style={{ marginBottom: '1rem', height: '3.5rem', width: '3.5rem' }}>
