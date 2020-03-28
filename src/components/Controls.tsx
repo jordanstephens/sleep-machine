@@ -152,53 +152,27 @@ const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
               />
               <label className="fader-label">R</label>
             </div>
-          </div>
-        </div>
-      </fieldset>
-      <fieldset className="form-col pulse-width">
-        <label className="form-row" htmlFor="width">
-          Pulse Width
-        </label>
-        <div className="form-row">
-          <div className="landscape">
-            <Slider
-              axis="x"
-              x={params.width}
-              xmin={0.1}
-              xmax={1.0}
-              xstep={0.1}
-              onChange={({ x }) => onChange({ width: x })}
-              styles={{
-                active: {
-                  background: FG_COLOR,
-                },
-                track: {
-                  background: BG_COLOR,
-                  cursor: 'move',
-                  width: '220px'
-                }
-              }}
-            />
-          </div>
-          <div className="portrait">
-            <Slider
-              axis="y"
-              y={params.width}
-              ymin={0.1}
-              ymax={1.0}
-              ystep={0.1}
-              onChange={({ y }) => onChange({ width: y })}
-              styles={{
-                active: {
-                  background: FG_COLOR,
-                },
-                track: {
-                  background: BG_COLOR,
-                  cursor: 'move',
-                  height: '200px'
-                }
-              }}
-            />
+            <div className="fader-container">
+              <Slider
+                axis="y"
+                y={params.width}
+                ymin={0.1}
+                ymax={1.0}
+                ystep={0.1}
+                onChange={({ y }) => onChange({ width: y })}
+                styles={{
+                  active: {
+                    background: FG_COLOR,
+                  },
+                  track: {
+                    background: BG_COLOR,
+                    cursor: 'move-y',
+                    height: '200px'
+                  }
+                }}
+              />
+              <label className="fader-label">W</label>
+            </div>
           </div>
         </div>
       </fieldset>
