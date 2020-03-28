@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import classnames from 'classnames';
 import cloneDeep from 'lodash/cloneDeep'
 import WeightedGraph from './WeightedGraph';
@@ -38,10 +38,19 @@ const MarkovChart: React.FC<IMarkovChartProps> = ({
   const meter = RangeMeter(200);
   const normalizedWeights = weights.map(G.normalize_proportions);
   const [editWeights, setEditWeights] = useState<G.Matrix>(cloneDeep(normalizedWeights));
+  const [hovered, setHovered] = useState<G.Vertex | null>(null);
   const [selected, setSelected] = useState<G.Vertex | null>(null);
 
-  function handleVertexClick(index: G.Vertex | null) {
-    setSelected(index === selected ? null : index);
+  const handleVertexClick = useCallback((index: G.Vertex | null) => {
+    setSelected((s) => index === s ? null : index);
+  }, [])
+
+  function handleVertexMouseEnter(index: G.Vertex) {
+    setHovered(index);
+  }
+
+  function handleVertexMouseLeave() {
+    setHovered(null);
   }
 
   function handleWeightDrag(event: DragEvent) {
@@ -64,28 +73,46 @@ const MarkovChart: React.FC<IMarkovChartProps> = ({
     }
   }
 
+  useEffect(() => {
+    function handleDocumentClick(event: MouseEvent) {
+      if (!event.target) return;
+      const target = event.target as Element;
+      if (target.classList.contains('weight-label')) return
+      if (selected == null) return;
+      handleVertexClick(null);
+    };
+    window.addEventListener('mousedown', handleDocumentClick);
+    return () => window.removeEventListener('mousedown', handleDocumentClick);
+  }, [handleVertexClick, selected])
+
+  const focused = selected == null ? hovered : selected
+
   return (
     <div className="MarkovChart">
       <WeightedGraph
         labels={labels}
         weights={weights[current]}
         className={classnames('active', {
-          fade: selected != null
+          fade: focused != null
         })}
         onVertexClick={(i) => {
           if (selected) return;
           handleVertexClick(i);
         }}
+        onVertexMouseEnter={handleVertexMouseEnter}
+        onVertexMouseLeave={handleVertexMouseLeave}
         selected1={current}
         selected2={next}
       />
-      {selected != null && (
+      {focused != null && (
         <WeightedGraph
           labels={labels}
-          weights={editWeights[selected]}
-          selected1={selected}
+          weights={editWeights[focused]}
+          selected1={focused}
           className="selected"
           onVertexClick={handleVertexClick}
+          onVertexMouseEnter={handleVertexMouseEnter}
+          onVertexMouseLeave={handleVertexMouseLeave}
           onWeightDrag={handleWeightDrag}
         />
       )}

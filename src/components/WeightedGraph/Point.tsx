@@ -11,11 +11,13 @@ interface IPointProps {
   label?: string;
   className?: string;
   onClick?: (event: React.MouseEvent) => void;
+  onMouseEnter?: (event: React.MouseEvent) => void;
+  onMouseLeave?: (event: React.MouseEvent) => void;
   config: IConfig;
 }
 
-const Point: React.FC<IPointProps> = ({ point, config, weight, label, className, onClick }) => (
-  <g onClick={onClick}>
+const Point: React.FC<IPointProps> = ({ point, config, weight, label, className, onClick, onMouseEnter, onMouseLeave }) => (
+  <g onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
     <Label
       text={label || ""}
       point={point}

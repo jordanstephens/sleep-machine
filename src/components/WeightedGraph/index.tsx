@@ -23,6 +23,8 @@ interface IProps {
   selected2?: number;
   onWeightDrag?: (event: DragEvent) => void;
   onVertexClick?: (i: G.Vertex | null, event: React.MouseEvent) => void;
+  onVertexMouseEnter?: (i: G.Vertex, event: React.MouseEvent) => void;
+  onVertexMouseLeave?: (i: G.Vertex, event: React.MouseEvent) => void;
   className?: string;
   config?: IConfig
 }
@@ -30,6 +32,8 @@ interface IProps {
 const WeightedGraph: React.FC<IProps> = ({
   labels = [],
   weights = [],
+  onVertexMouseEnter = NOOP,
+  onVertexMouseLeave = NOOP,
   onVertexClick = NOOP,
   onWeightDrag,
   className,
@@ -91,7 +95,9 @@ const WeightedGraph: React.FC<IProps> = ({
                 point={point}
                 weight={selected1 === i ? 1 : active_weights[i]}
                 label={labels[i] || String(i)}
-                onClick={(event: React.MouseEvent) => onVertexClick(i, event)}
+                onClick={(event) => onVertexClick(i, event)}
+                onMouseEnter={(event) => onVertexMouseEnter(i, event)}
+                onMouseLeave={(event) => onVertexMouseLeave(i, event)}
                 className={classnames({
                   selected1: selected1 === i,
                   selected2: selected2 === i
