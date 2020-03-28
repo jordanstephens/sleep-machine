@@ -5,6 +5,7 @@ import PlayPauseButton from './PlayPauseButton';
 import MarkovChart from './MarkovChart';
 import Controls from './Controls';
 import Machine from '../lib/machine'
+import NumberInput from './NumberInput';
 
 const LABELS = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 const INITIAL_WEIGHTS = [
@@ -98,14 +99,14 @@ const SleepMachine: React.FC<IProps> = () => {
                 : <PlayPauseButton playing={playing} onClick={handlePlayPause} />
               }
             </div>
-            <input
-              type="number"
+            <NumberInput
               id="tempo"
               name="tempo"
-              value={machine.params.tempo}
-              onChange={(event) => machine.updateParams({
-                tempo: parseInt(event.target.value, 10)
-              })}
+              min={60}
+              max={180}
+              step={1}
+              value={Math.round(machine.params.tempo)}
+              onChange={(tempo) => machine.updateParams({ tempo })}
               style={{ width: '5ch' }}
             />
           </div>
