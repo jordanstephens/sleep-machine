@@ -92,12 +92,9 @@ const SleepMachine: React.FC<IProps> = () => {
         <div className="transport-controls-container">
           <div className="transport-controls">
             <div className="ProgressMeter-container">
-              {playing
-                ? (
-                  <ProgressMeter beat={beat} />
-                )
-                : <PlayPauseButton playing={playing} onClick={handlePlayPause} />
-              }
+              {playing && (
+                <ProgressMeter beat={beat} />
+              )}
             </div>
             <NumberInput
               id="tempo"
@@ -107,8 +104,9 @@ const SleepMachine: React.FC<IProps> = () => {
               step={1}
               value={Math.round(machine.params.tempo)}
               onChange={(tempo) => machine.updateParams({ tempo })}
-              style={{ width: '5ch' }}
+              className="tempo-input"
             />
+            <small>bpm</small>
           </div>
         </div>
       </header>
