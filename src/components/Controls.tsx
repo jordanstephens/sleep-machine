@@ -9,6 +9,7 @@ import RadioButtons from './RadioButtons';
 
 const BG_COLOR = 'hsla(0, 0%, 0%, 0.4)'
 const FG_COLOR = 'grey'
+const FADER_HEIGHT = '100px'
 
 const WAVEFORM_OPTIONS = [
   {
@@ -83,7 +84,7 @@ const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
                   track: {
                     background: BG_COLOR,
                     cursor: 'move-y',
-                    height: '200px'
+                    height: FADER_HEIGHT
                   }
                 }}
               />
@@ -104,7 +105,7 @@ const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
                   track: {
                     background: BG_COLOR,
                     cursor: 'move-y',
-                    height: '200px'
+                    height: FADER_HEIGHT
                   }
                 }}
               />
@@ -125,7 +126,7 @@ const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
                   track: {
                     background: BG_COLOR,
                     cursor: 'move-y',
-                    height: '200px'
+                    height: FADER_HEIGHT
                   }
                 }}
               />
@@ -146,7 +147,7 @@ const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
                   track: {
                     background: BG_COLOR,
                     cursor: 'move-y',
-                    height: '200px'
+                    height: FADER_HEIGHT
                   }
                 }}
               />
@@ -167,7 +168,7 @@ const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
                   track: {
                     background: BG_COLOR,
                     cursor: 'move-y',
-                    height: '200px'
+                    height: FADER_HEIGHT
                   }
                 }}
               />
@@ -200,7 +201,8 @@ const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
                 background: BG_COLOR,
                 borderRadius: '4px',
                 cursor: 'move',
-                width: '220px'
+                height: FADER_HEIGHT,
+                width: '100%'
               }
             }}
           />
@@ -243,7 +245,8 @@ const Controls: React.FC<IControlsProps> = ({ params, onChange }) => {
                 background: BG_COLOR,
                 borderRadius: '4px',
                 cursor: 'move',
-                width: '220px'
+                height: FADER_HEIGHT,
+                width: '100%'
               }
             }}
           />

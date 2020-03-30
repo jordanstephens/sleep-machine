@@ -152,7 +152,7 @@
 .Controls .form-row {
   display: flex;
   flex-direction: row;;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .RadioButtons {
@@ -234,13 +234,13 @@
 @media screen and (orientation:portrait) {
   .SleepMachine { flex-direction: column; }
   .Controls-container {
-    height: 340px;
+    height: 200px;
     width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
   }
   .viz-container {
-    height: calc(100% - 340px);
+    height: calc(100% - 200px);
     width: 100%;
   }
 
@@ -248,12 +248,13 @@
   .Controls .form-col { margin-right: 2rem; flex-shrink: 0; width: 100px; }
   .waveform .RadioButtons,
   .delay-time .RadioButtons {
-    flex-direction: column;
-    width: 60px;
-    flex-grow: 0;
+    display: grid;
+    grid-template-columns: 50px 50px;
+    grid-template-rows: 50px 50px;
   }
 
-  .landscape { display: none;}
+  .fader-label,
+  label.form-row { font-size: smaller; }
 }
 
 @media screen and (orientation:landscape) {
@@ -272,6 +273,9 @@
   .Controls {
     flex-direction: column;
   }
+}
 
-  .portrait { display: none;}
+@media screen and (orientation:landscape) and (min-width: 960px) {
+  .Controls-container { width: 300px; }
+  .viz-container { width: calc(100% - 300px); }
 }
