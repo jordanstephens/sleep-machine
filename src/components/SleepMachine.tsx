@@ -85,7 +85,7 @@ const SleepMachine: React.FC<IProps> = () => {
       <header className="SleepMachine-header">
         <h1 className="wordmark">
           <span>Zzz Machine</span><br />
-          <small><em>by <a href="https://twitter.com/jordanstpehens">@jordanstephens</a></em></small>
+          <small><em>by <a href="https://twitter.com/jordanstephens">@jordanstephens</a></em></small>
         </h1>
         <div className="transport-controls-container">
           <div className="transport-controls">
