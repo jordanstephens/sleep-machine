@@ -52,7 +52,7 @@ const KEYCODE = {
   SPACEBAR: 32
 };
 
-const smallScreen = () => window.innerWidth < 420 || window.innerHeight < 420
+const smallScreen = () => window.screen.width < 420 || window.screen.height < 420
 async function toggleFullScreen(enter: boolean) {
   if (!document.fullscreenEnabled || !smallScreen()) return;
   return enter
