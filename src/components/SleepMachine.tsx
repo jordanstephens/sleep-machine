@@ -7,7 +7,7 @@ import Controls from './Controls';
 import Machine from '../lib/machine'
 import NumberInput from './NumberInput';
 
-const LABELS = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
+const LABELS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const INITIAL_WEIGHTS = [
   [0.00, 0.09, 0.06, 0.30, 0.40, 0.15, 0],
   [0.18, 0.00, 0.13, 0.22, 0.22, 0.25, 0],
@@ -39,7 +39,7 @@ function useMachine(machine: Machine): [number, number, number | undefined, bool
       setNext(undefined);
       setCurrent(active);
     }).on('beat', (beat) => {
-      setBeat(beat)
+      setBeat(beat);
     });
 
     return () => machine.stop();
@@ -52,13 +52,23 @@ const KEYCODE = {
   SPACEBAR: 32
 };
 
+const smallScreen = () => window.innerWidth < 420 || window.innerHeight < 420
+async function toggleFullScreen(enter: boolean) {
+  if (!document.fullscreenEnabled || !smallScreen()) return;
+  return enter
+    ? document.documentElement.requestFullscreen()
+    : document.exitFullscreen();
+}
+
 const SleepMachine: React.FC<IProps> = () => {
   const [beat, current, next, playing, setPlaying] = useMachine(machine)
 
-  function handlePlayPause() {
-    const machineState = machine.state === 'started'
-    setPlaying(!machineState)
+  async function handlePlayPause() {
+    const playing = machine.state === 'started';
+    setPlaying(!playing);
+    if (!playing) await toggleFullScreen(true);
     machine.toggle();
+    if (playing) await toggleFullScreen(false);
   }
 
   useEffect(() => {
